@@ -1,0 +1,137 @@
+/* #app { height: 100% }
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide1  {
+  text-align: center;
+  font-size: 18px;
+  background-image: url(https://cloudinary.fifa.com/m/74dcea0f99c7fa98/webimage-Previews-FIFA-World-Cup-Qatar-2022.png?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  Center slide text vertically
+
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.swiper-slide2  {
+    text-align: center;
+    font-size: 18px;
+    background-image: url(https://cloudinary.fifa.com/m/103efdcd1504c2ac/webimage-Previews-FIFA-Club-World-Cup-Qatar-2019.png?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+  
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.swiper-slide3 {
+    text-align: center;
+    font-size: 18px;
+    background-image: url(https://cloudinary.fifa.com/transform/6797f9c0-bcd1-43a3-8e3f-0a492d74437c/a5dp9g7i7d4pjr1uoch6-jpg?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+  
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.swiper-slide4  {
+    text-align: center;
+    font-size: 18px;
+    background-image: url(https://cloudinary.fifa.com/transform/88c05029-0cdf-47cb-8ba5-cef08f222588/72nd-FIFA-World-Cup-Qatar-2022-Final-Draw-Previews?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+  
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.swiper-slide5  {
+    text-align: center;
+    font-size: 18px;
+    background-image: url(https://cloudinary.fifa.com/transform/37468c98-5a97-4eff-b601-8887de1b92f0/ijc2eusflippzfho5mnn-jpg?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+  
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.swiper-slide6 {
+    text-align: center;
+    font-size: 18px;
+    background-image: url(https://cloudinary.fifa.com/transform/fadfa914-bf21-40d0-91fe-2d840c29fe9e/1300670893-jpg?tx=c_fill,ar_0.63,g_auto,q_auto:best,w_628);
+  
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+} */
+
+
+#app {
+    height: 100%;
+  }
+  html,
+  body {
+    position: relative;
+    height: 100%;
+  }
+  
+  body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
