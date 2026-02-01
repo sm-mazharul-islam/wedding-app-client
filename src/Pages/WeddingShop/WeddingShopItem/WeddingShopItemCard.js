@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./../../../App.css";
 
 const WeddingShopItemCard = ({ product }) => {
   const { id, name, image, priceOne, priceTwo, description, rating } = product;
@@ -17,14 +18,14 @@ const WeddingShopItemCard = ({ product }) => {
           <p className="text-xl font-bold">Offer Price Go</p>
         </div>
         <div className="card-actions justify-end">
-          <div className="badge badge-outline">Fashion</div>
-          <div className="badge badge-outline">
+          {/* <div className="badge badge-outline">Fashion</div> */}
+          <div className="main">
             <Link
               to={{
-                pathname: `/productDetails/${product.id}`,
+                pathname: `/productDetails/${product._id}`,
               }}
             >
-              Details
+              <button className="btn-1">Details</button>
             </Link>
           </div>
         </div>

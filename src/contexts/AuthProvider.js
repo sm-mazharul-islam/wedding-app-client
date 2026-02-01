@@ -57,7 +57,10 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
+  if (loading) {
+    return <p>Loading...</p>; // Display a loading message while checking auth state
+  }
 
   const authInfo = {
     createUser,

@@ -1,38 +1,44 @@
-.App {
-  text-align: center;
+.btn-1 {
+  border: 2px solid tomato;
+  /* border: transparent; */
+  color: tomato;
+  padding: 10px 20px;
+  background-color: transparent;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn-1::after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  /* background-color: tomato; */
+  background-color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition-property: all;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+  /* transform: translate(100px); */
+  transform: rotate(120deg);
+  /* transform: scaleX(0); */
+  /* transform: scaleY(0); */
+  z-index: -1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.btn-1:hover {
+  transform: scale(1.05);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-1:hover:after {
+  /* transform: translate(0px); */
+  transform: rotate(0deg);
+  /* transform: scaleX(1); */
+  /* transform: scaleY(1); */
+  background-color: tomato;
 }

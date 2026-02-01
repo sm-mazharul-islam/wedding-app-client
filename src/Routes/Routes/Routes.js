@@ -12,6 +12,15 @@ import WeddingShop from "../../Pages/WeddingShop/WeddingShop/WeddingShop";
 import WeddingShopSingleItem from "../../Pages/WeddingShop/WeddingShopSingleItem/WeddingShopSingleItem";
 import WeddingShopHome from "../../Pages/WeddingShop/WeddingShopSingleItem/WeddingShopHome";
 import NotFound from "../../Pages/About/NotFound/NotFound";
+import AllOrderProduct from "../../Pages/Dashboard/Dashboard/DashboardHome/AllOrderProduct";
+import CreateAdmin from "../../Pages/Dashboard/Dashboard/DashboardHome/CreateAdmin";
+import AddProducts from "../../Pages/Dashboard/Dashboard/DashboardHome/AddProducts";
+import DashboardLayout from "../../Layout/DashboardLayout";
+import AddReviews from "../../Pages/Dashboard/Dashboard/DashboardHome/AddReviews";
+import ViewCart from "../../Pages/Dashboard/Dashboard/DashboardHome/ViewCart/ViewCart";
+import AllPackage from "../../Pages/Dashboard/Dashboard/DashboardHome/AllPackage/AllPackage";
+import AddPackage from "../../Pages/Dashboard/Dashboard/DashboardHome/AddPackage/AddPackage";
+import DashboardHome from "../../Pages/Dashboard/Dashboard/DashboardHome/DashboardHome";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +57,7 @@ const router = createBrowserRouter([
         element: <WeddingShop></WeddingShop>,
       },
       {
-        path: "/productDetails/:id",
+        path: "productDetails/:id",
         element: <WeddingShopHome></WeddingShopHome>,
       },
       {
@@ -59,11 +68,47 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <Dashboard></Dashboard>
-      </PrivateRoute>
-    ),
+    element: <Dashboard />,
+    children: [
+      {
+        index: true, // This makes it the default view for /dashboard
+        element: <DashboardHome />,
+      },
+
+      {
+        path: "allOrderProduct",
+        element: <AllOrderProduct />,
+      },
+      {
+        path: "create-admin",
+        element: <CreateAdmin />,
+      },
+      {
+        path: "all-packages",
+        element: <AllPackage />,
+      },
+      {
+        path: "add-package",
+        element: <AddPackage />,
+      },
+      {
+        path: "add-reviews",
+        element: <AddReviews />,
+      },
+      {
+        path: "add-products",
+        element: <AddProducts />,
+      },
+      {
+        path: "add-cart",
+        element: <ViewCart />,
+      },
+    ],
+    // element: (
+    //   <PrivateRoute>
+    //     <Dashboard></Dashboard>
+    //   </PrivateRoute>
+    // ),
   },
 ]);
 export default router;

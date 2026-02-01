@@ -35,15 +35,49 @@ const TeamMembers = () => {
   ];
   return (
     <div>
-      <h3 className="text-center text-xl">
-        Our Last project successfully completed Team
-      </h3>
-      <img src={aboutLogo} className="mx-auto w-[400px] h-[10px]" alt="" />
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-center max-w-[1440px] mx-auto">
-        {team.map((member) => (
-          <TeamMember key={member.id} member={member}></TeamMember>
-        ))}
-      </div>
+      <section className="bg-[#FAF7F6] py-24 px-6">
+        {/* --- SECTION HEADER --- */}
+        <div className="text-center mb-20 space-y-4">
+          {/* Small Eyebrow Text */}
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <span className="w-12 h-[1px] bg-gray-300"></span>
+            <span className="text-[11px] uppercase tracking-[0.6em] text-gray-400 font-semibold">
+              Excellence in Motion
+            </span>
+            <span className="w-12 h-[1px] bg-gray-300"></span>
+          </div>
+
+          {/* Main Title with Serif Italic focus */}
+          <h3 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight">
+            Our{" "}
+            <span className="italic font-light text-gray-700">Visionary</span>{" "}
+            Team
+          </h3>
+
+          {/* Subtitle - Using your text but making it elegant */}
+          <p className="text-gray-500 font-light italic tracking-widest text-sm max-w-lg mx-auto">
+            The creative minds behind our last successfully completed projects
+          </p>
+
+          {/* Designed Divider using your aboutLogo */}
+          <div className="relative flex justify-center items-center mt-8">
+            <img
+              src={aboutLogo}
+              className="w-[300px] h-auto opacity-60 hover:opacity-100 transition-opacity duration-700"
+              alt="Decorative divider"
+            />
+          </div>
+        </div>
+
+        {/* --- TEAM GRID --- */}
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 justify-center max-w-[1440px] mx-auto">
+          {team.map((member) => (
+            <div key={member.id} className="group">
+              <TeamMember member={member} />
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

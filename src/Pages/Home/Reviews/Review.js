@@ -6,9 +6,14 @@ const Review = ({ review }) => {
   return (
     <div className=" card w-[80%] bg-base-100">
       <div className=" h-full rounded mx-auto ">
-        <div className="w-40  border-4 border-white p-2 shadow-lg mx-auto">
-          <img src={image} className="h-36 w-36" alt="" />
+        <div className="w-40 h-40 border-4 border-white p-2 shadow-lg mx-auto flex items-center justify-center">
+          <img
+            src={image}
+            alt=""
+            className="h-full w-full object-cover rounded"
+          />
         </div>
+
         <div className="w-11 mx-auto">
           <img
             src={mark}
