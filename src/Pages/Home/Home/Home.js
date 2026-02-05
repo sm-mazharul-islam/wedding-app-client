@@ -7,6 +7,7 @@ import Offer from "../Offer/Offer";
 import Reviews from "../Reviews/Reviews";
 import Services from "../Services/Services";
 import Statement from "../Statement/Statement";
+import ServicesPage from "../Services/ServicesPage";
 
 const Home = () => {
   return (
@@ -17,7 +18,7 @@ const Home = () => {
       <Statement />
       <AmazingWork />
       <Reviews />
-      <Services />
+      <ServicesPage />
       <InfoCards />
     </div>
   );

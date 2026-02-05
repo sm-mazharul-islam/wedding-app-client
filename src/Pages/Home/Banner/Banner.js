@@ -155,6 +155,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "./Banner.css"; // See the CSS below for the zoom effect
+import { Link } from "react-router-dom";
 
 export default function Banner() {
   const slides = [
@@ -234,9 +235,11 @@ export default function Banner() {
                   <button className="px-10 py-4 bg-white text-gray-900 text-[10px] uppercase tracking-widest font-bold hover:bg-[#FAF7F6] transition-colors duration-300">
                     Plan Your Event
                   </button>
-                  <button className="px-10 py-4 border border-white text-white text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all duration-300">
-                    Our Gallery
-                  </button>
+                  <Link to={"gallery"}>
+                    <button className="px-10 py-4 border border-white text-white text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all duration-300">
+                      Our Gallery
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

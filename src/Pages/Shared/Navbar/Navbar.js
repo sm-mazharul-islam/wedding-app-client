@@ -52,10 +52,16 @@ const Navbar = () => {
         <Link to="/">Home</Link>
       </li>
       <li>
-        <Link to="/appointment">Our Services</Link>
+        <Link to="/eventCoordination">EventCoordination</Link>
+      </li>
+      <li>
+        <Link to="/gallery">Gallery</Link>
       </li>
       <li>
         <Link to="/weddingShop">Bridal Shop</Link>
+      </li>
+      <li>
+        <Link to="/findYourMatch">Find Your Match</Link>
       </li>
       <li>
         <Link to="/about">Our Story</Link>

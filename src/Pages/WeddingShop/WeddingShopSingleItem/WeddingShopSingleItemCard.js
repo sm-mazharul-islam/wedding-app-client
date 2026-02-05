@@ -1,293 +1,52 @@
-// import React, { useState } from "react";
-
-// const WeddingShopSingleItemCard = ({ detail }) => {
-//   const { id, name, description, image, priceOne, priceTwo, inStock } = detail;
-//   console.log(detail);
-
-//   // const [mainImage, setMainImage] = useState(image[0]);
-
-//   const [mainImage, setMainImage] = useState(
-//     Array.isArray(image) && image.length > 0 ? image[0] : null,
-//   );
-//   const [amount, setAmount] = useState(1);
-//   const setDecrease = () => {
-//     amount > 1 ? setAmount(amount - 1) : setAmount(1);
-//   };
-//   const setIncrease = () => {
-//     amount < inStock ? setAmount(amount + 1) : setAmount(inStock);
-//   };
-
-//   return (
-//     <div>
-//       <div>
-//         <div className="hero">
-//           <div className="hero-content flex-col lg:flex-row">
-//             <div>
-//               <div>
-//                 {mainImage?.url && (
-//                   <img
-//                     src={mainImage.url}
-//                     style={{ width: "488px", height: "565px" }}
-//                     alt=""
-//                   />
-//                 )}
-//                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-//                 Officiis laboriosam fugiat explicabo id voluptatem aspernatur
-//                 obcaecati quis praesentium dolore corporis.
-//               </div>
-//               <div className="grid grid-rows-1 grid-flow-col gap-4 mr-9">
-//                 {detail?.image?.map((img) => {
-//                   return (
-//                     <figure>
-//                       <img
-//                         src={img.url}
-//                         style={{
-//                           width: "150px",
-//                           height: "100px",
-//                           marginTop: "10px",
-//                         }}
-//                         alt=""
-//                         onClick={() => setMainImage(img)}
-//                       />
-//                     </figure>
-//                   );
-//                 })}
-//               </div>
-//             </div>
-
-//             <div className="m-9">
-//               <h1 className="text-5xl font-bold">{name}</h1>
-//               <p className="py-2">Write your comment</p>
-//               <p className="py-2 text-[15px]">
-//                 {inStock > 0 ? "In Stock" : "Not Available"}
-//               </p>
-//               <div className="card-actions  justify-start text-center">
-//                 <del className="text-xl font-bold">MRP:${priceOne + 250}</del>
-//                 <p className="px-4 text-xl font-bold">MRP: ${priceTwo}</p>
-//               </div>
-//               <p className="py-4 text-xl">{description}</p>
-//               <p className="py-2 ">
-//                 {" "}
-//                 Quantity:
-//                 <button
-//                   className="btn btn-outline p-3 border-2 m-2 "
-//                   onClick={() => setIncrease()}
-//                 >
-//                   +
-//                 </button>
-//                 <span className="p-3 border-2">{amount}</span>
-//                 <button
-//                   className="btn btn-outline p-3 border-2 m-2"
-//                   onClick={() => setDecrease()}
-//                 >
-//                   -
-//                 </button>
-//               </p>
-
-//               <button className="btn btn-outline  my-2">Add To Cart</button>
-//               <br />
-//               <button className="btn btn-outline  my-2">Add To Wishlist</button>
-//               <br />
-//               <button className="btn btn-outline  my-2">Ask a Question</button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WeddingShopSingleItemCard;
-
-//!
-
-// import React, { useState, useContext } from "react"; // Added useContext
-// import { AuthContext } from "../../../contexts/AuthProvider"; // Import your AuthContext
-
-// const WeddingShopSingleItemCard = ({ detail }) => {
-//   const { id, name, description, image, priceOne, priceTwo, inStock } = detail;
-
-//   // Access the user from your AuthContext
-//   const { user } = useContext(AuthContext);
-
-//   const [mainImage, setMainImage] = useState(
-//     Array.isArray(image) && image.length > 0 ? image[0] : null,
-//   );
-//   const [amount, setAmount] = useState(1);
-
-//   const setDecrease = () => {
-//     amount > 1 ? setAmount(amount - 1) : setAmount(1);
-//   };
-//   const setIncrease = () => {
-//     amount < inStock ? setAmount(amount + 1) : setAmount(inStock);
-//   };
-
-//   // --- Add To Cart Implementation ---
-//   const handleAddToCart = () => {
-//     // 1. Safety check: Only allow adding if a user is logged in
-//     if (!user?.uid) {
-//       alert("Please login to add items to your cart.");
-//       return;
-//     }
-
-//     const cartItem = {
-//       id,
-//       name,
-//       price: priceTwo,
-//       quantity: amount,
-//       image: mainImage?.url,
-//     };
-
-//     // 2. Define a user-specific key
-//     const userCartKey = `cart_${user.uid}`;
-
-//     // 3. Get cart data for THIS specific user
-//     const existingCart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
-
-//     const itemIndex = existingCart.findIndex((item) => item.id === id);
-//     if (itemIndex > -1) {
-//       existingCart[itemIndex].quantity += amount;
-//     } else {
-//       existingCart.push(cartItem);
-//     }
-
-//     // 4. Save back to user-specific storage
-//     localStorage.setItem(userCartKey, JSON.stringify(existingCart));
-
-//     // Signals the navbar to update the count
-//     window.dispatchEvent(new Event("cartUpdated"));
-
-//     alert(`${name} added to your personal cart!`);
-//   };
-
-//   return (
-//     <div>
-//       <div className="hero">
-//         <div className="hero-content flex-col lg:flex-row">
-//           <div>
-//             <div>
-//               {mainImage?.url && (
-//                 <img
-//                   src={mainImage.url}
-//                   style={{ width: "488px", height: "565px" }}
-//                   alt={name}
-//                 />
-//               )}
-//             </div>
-//             <div className="grid grid-rows-1 grid-flow-col gap-4 mr-9">
-//               {detail?.image?.map((img, index) => (
-//                 <figure key={index}>
-//                   <img
-//                     src={img.url}
-//                     style={{
-//                       width: "150px",
-//                       height: "100px",
-//                       marginTop: "10px",
-//                       cursor: "pointer",
-//                       border:
-//                         mainImage?.url === img.url
-//                           ? "2px solid #D4B0A5"
-//                           : "none",
-//                     }}
-//                     alt={`${name} thumbnail`}
-//                     onClick={() => setMainImage(img)}
-//                   />
-//                 </figure>
-//               ))}
-//             </div>
-//           </div>
-
-//           <div className="m-9">
-//             <h1 className="text-5xl font-bold">{name}</h1>
-//             <p className="py-2 text-[15px] font-semibold">
-//               Status:{" "}
-//               {inStock > 0 ? (
-//                 <span className="text-success">In Stock</span>
-//               ) : (
-//                 <span className="text-error">Not Available</span>
-//               )}
-//             </p>
-//             <div className="card-actions justify-start text-center">
-//               <del className="text-xl text-gray-400 font-bold">
-//                 MRP: ${priceOne + 250}
-//               </del>
-//               <p className="px-4 text-xl font-bold text-primary">
-//                 Price: ${priceTwo}
-//               </p>
-//             </div>
-//             <p className="py-4 text-xl">{description}</p>
-
-//             <div className="py-2 flex items-center">
-//               <span className="mr-4 font-bold">Quantity:</span>
-//               <button className="btn btn-outline btn-sm" onClick={setDecrease}>
-//                 -
-//               </button>
-//               <span className="px-6 py-2 border-2 mx-2 font-bold">
-//                 {amount}
-//               </span>
-//               <button className="btn btn-outline btn-sm" onClick={setIncrease}>
-//                 +
-//               </button>
-//             </div>
-
-//             <button
-//               className="btn btn-primary my-4 w-full lg:w-auto"
-//               onClick={handleAddToCart}
-//               disabled={inStock <= 0}
-//             >
-//               Add To Cart
-//             </button>
-//             <br />
-//             <div className="flex flex-col space-y-2">
-//               <button className="btn btn-outline btn-sm w-fit">
-//                 Add To Wishlist
-//               </button>
-//               <button className="btn btn-outline btn-sm w-fit">
-//                 Ask a Question
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WeddingShopSingleItemCard;
-//!
+//!!!!
 
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast"; // Recommended for feedback
+import Swal from "sweetalert2";
 
 const WeddingShopSingleItemCard = ({ detail }) => {
-  const { _id, id, name, description, image, priceOne, priceTwo } = detail;
+  const {
+    _id,
+    id,
+    name,
+    description,
+    image = [],
+    priceOne,
+    priceTwo,
+  } = detail || {};
   const { user } = useContext(AuthContext);
+  const productId = _id || id;
 
-  // 1. Fetch LIVE stock data to ensure it updates when someone else buys
-  const { data: liveProduct = detail, refetch } = useQuery({
-    queryKey: ["servicesPackage", _id || id],
+  const {
+    data: liveProduct,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["servicesPackage", productId],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/servicesPackage/${_id || id}`,
+        `https://wedding-app-server-eight.vercel.app/servicesPackage/${productId}`,
       );
       if (!res.ok) throw new Error("Failed to fetch live stock");
       return res.json();
     },
-    // Optional: Refresh data every 5 seconds to keep stock synced across users
+    enabled: !!productId,
     refetchInterval: 5000,
   });
 
-  // Use the live stock value
-  const inStock = liveProduct.inStock;
+  const inStock = liveProduct?.inStock ?? detail?.inStock ?? 0;
+  const [mainImage, setMainImage] = useState(null);
 
-  const [mainImage, setMainImage] = useState(
-    Array.isArray(image) && image.length > 0 ? image[0] : null,
-  );
+  useEffect(() => {
+    if (Array.isArray(image) && image.length > 0) {
+      setMainImage(image[0]);
+    }
+  }, [image]);
 
   const [amount, setAmount] = useState(inStock > 0 ? 1 : 0);
 
-  // Sync amount state if stock drops to 0 in real-time
   useEffect(() => {
     if (inStock <= 0) {
       setAmount(0);
@@ -308,66 +67,117 @@ const WeddingShopSingleItemCard = ({ detail }) => {
 
   const handleAddToCart = () => {
     if (!user?.uid) {
-      alert("Please login to add items to your cart.");
+      Swal.fire(
+        "Login Required",
+        "Please login to add items to your cart.",
+        "info",
+      );
       return;
     }
 
-    // Double check stock one last time before adding to prevent overselling
+    // স্টক চেক
     if (amount > inStock) {
-      alert(
-        "Stock updated. Available items are less than your selected quantity.",
+      Swal.fire(
+        "Out of Stock",
+        "Available items are less than your selected quantity.",
+        "warning",
       );
       refetch();
       return;
     }
 
-    const cartItem = {
-      id: _id || id,
-      name,
+    // ১. ডাটা প্রিপেয়ার করা
+    // এখানে নিশ্চিত করুন আপনার কম্পোনেন্টে '_id' ভেরিয়েবলটি ডাটাবেজ থেকে আসছে
+    const orderData = {
+      productId: _id, // আপনার ডাটাবেজের অরিজিনাল ObjectId (e.g. 6666077f...)
+      userEmail: user?.email,
+      userName: user?.displayName,
+      packageName: name,
       price: priceTwo,
       quantity: amount,
-      image: mainImage?.url,
+      image: mainImage?.url || (image?.length > 0 ? image[0].url : ""),
+      status: "pending",
+      orderDate: new Date().toISOString(),
     };
 
-    const userCartKey = `cart_${user.uid}`;
-    const existingCart = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+    // ২. ডাটাবেজে পাঠানো
+    fetch("https://wedding-app-server-eight.vercel.app/orders", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(orderData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          // ৩. লোকাল স্টোরেজ সিঙ্ক
+          const userCartKey = `cart_${user.uid}`;
+          const existingCart = JSON.parse(
+            localStorage.getItem(userCartKey) || "[]",
+          );
 
-    const itemIndex = existingCart.findIndex((item) => item.id === cartItem.id);
-    if (itemIndex > -1) {
-      existingCart[itemIndex].quantity += amount;
-    } else {
-      existingCart.push(cartItem);
-    }
+          // পুরানো ভুল ডাটা থাকলে তা ফিল্টার করে ফেলা (যাতে 'Invalid Cart Data' আর না আসে)
+          const cleanedCart = existingCart.filter(
+            (item) => item.productId || item._id,
+          );
 
-    localStorage.setItem(userCartKey, JSON.stringify(existingCart));
-    window.dispatchEvent(new Event("cartUpdated"));
-    alert(`${name} added to your personal cart!`);
+          const isExist = cleanedCart.find(
+            (item) => (item.productId || item._id) === orderData.productId,
+          );
+
+          if (!isExist) {
+            cleanedCart.push(orderData);
+          }
+
+          localStorage.setItem(userCartKey, JSON.stringify(cleanedCart));
+
+          // ৪. গ্লোবাল ইভেন্ট ডিসপ্যাচ
+          window.dispatchEvent(new Event("cartUpdated"));
+
+          Swal.fire({
+            title: "Added!",
+            text: `${name} has been added to your cart.`,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Database Order Error:", err);
+        Swal.fire("Error", "Failed to sync with database.", "error");
+      });
   };
+  if (isLoading && !detail)
+    return (
+      <div className="p-20 text-center font-bold">
+        Connecting to stock server...
+      </div>
+    );
 
   return (
-    <div>
+    <div className="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
       <div className="hero">
         <div className="hero-content flex-col lg:flex-row">
           <div>
-            <div>
-              {mainImage?.url && (
-                <img
-                  src={mainImage.url}
-                  style={{ width: "488px", height: "565px" }}
-                  alt={name}
-                  className="rounded-2xl shadow-sm"
-                />
-              )}
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src={mainImage?.url || "https://i.ibb.co/5GzXkwq/user.png"}
+                style={{ width: "488px", height: "565px" }}
+                alt={name}
+                className="rounded-2xl shadow-sm object-cover transition-transform hover:scale-105"
+                onError={(e) => {
+                  e.target.src = "https://i.ibb.co/5GzXkwq/user.png";
+                }}
+              />
             </div>
-            <div className="grid grid-rows-1 grid-flow-col gap-4 mr-9">
-              {detail?.image?.map((img, index) => (
+            <div className="grid grid-rows-1 grid-flow-col gap-4 mt-4">
+              {image?.map((img, index) => (
                 <figure key={index}>
                   <img
                     src={img.url}
                     style={{
                       width: "150px",
                       height: "100px",
-                      marginTop: "10px",
                       cursor: "pointer",
                       border:
                         mainImage?.url === img.url
@@ -376,83 +186,74 @@ const WeddingShopSingleItemCard = ({ detail }) => {
                     }}
                     alt={`${name} thumbnail`}
                     onClick={() => setMainImage(img)}
-                    className="rounded-lg"
+                    className="rounded-lg object-cover shadow-sm"
                   />
                 </figure>
               ))}
             </div>
           </div>
 
-          <div className="m-9">
-            <h1 className="text-5xl font-bold">{name}</h1>
+          <div className="m-9 lg:w-1/2">
+            <h1 className="text-5xl font-extrabold text-[#1A1D1F] tracking-tight">
+              {name}
+            </h1>
 
-            {/* LIVE STOCK STATUS - Changes based on DB numbers */}
-            <p className="py-2 text-[15px] font-semibold">
+            <p className="py-2 text-[15px] font-bold mt-2 uppercase tracking-widest">
               Status:{" "}
               {inStock > 0 ? (
-                <span className="text-success">
-                  {inStock} Items Available in Stock
-                </span>
+                <span className="text-green-500">{inStock} In Stock</span>
               ) : (
-                <span className="text-error font-bold blur-[0.5px]">
-                  Out of Stock / Closed
-                </span>
+                <span className="text-red-500 italic">Out of Stock</span>
               )}
             </p>
 
-            <div className="card-actions justify-start text-center">
+            <div className="flex items-center gap-4 mt-4">
               <del className="text-xl text-gray-400 font-bold">
                 MRP: ${priceOne + 250}
               </del>
-              <p className="px-4 text-xl font-bold text-primary">
+              <p className="text-3xl font-black text-black">
                 Price: ${priceTwo}
               </p>
             </div>
-            <p className="py-4 text-xl">{description}</p>
 
-            <div className="py-2 flex items-center">
-              <span className="mr-4 font-bold">Quantity:</span>
-              <button
-                className="btn btn-outline btn-sm"
-                onClick={setDecrease}
-                disabled={inStock <= 0}
-              >
-                -
-              </button>
-              <span className="px-6 py-2 border-2 mx-2 font-bold">
-                {amount}
+            <p className="py-6 text-gray-600 leading-relaxed text-lg border-b border-gray-100">
+              {description}
+            </p>
+
+            <div className="py-6 flex items-center">
+              <span className="mr-6 font-bold text-gray-700">
+                Select Quantity:
               </span>
-              <button
-                className="btn btn-outline btn-sm"
-                onClick={setIncrease}
-                disabled={inStock <= 0 || amount >= inStock}
-              >
-                +
-              </button>
+              <div className="flex items-center bg-gray-50 rounded-xl p-1 border">
+                <button
+                  className="btn btn-ghost btn-sm px-4"
+                  onClick={setDecrease}
+                  disabled={inStock <= 0}
+                >
+                  -
+                </button>
+                <span className="px-6 font-black text-lg">{amount}</span>
+                <button
+                  className="btn btn-ghost btn-sm px-4"
+                  onClick={setIncrease}
+                  disabled={inStock <= 0 || amount >= inStock}
+                >
+                  +
+                </button>
+              </div>
             </div>
 
-            {/* DYNAMIC BUTTON - Blurs and disables when inStock is 0 */}
             <button
-              className={`btn my-4 w-full lg:w-auto transition-all duration-300 ${
+              className={`btn btn-lg w-full lg:w-auto px-12 rounded-2xl shadow-xl transition-all ${
                 inStock <= 0
-                  ? "btn-disabled bg-gray-300 text-gray-400 cursor-not-allowed blur-[1px]"
-                  : "btn-primary shadow-md hover:shadow-lg"
+                  ? "btn-disabled bg-gray-200 text-gray-400"
+                  : "bg-black hover:bg-gray-800 text-white border-none"
               }`}
               onClick={handleAddToCart}
               disabled={inStock <= 0}
             >
-              {inStock > 0 ? "Add To Cart" : "Stock Closed"}
+              {inStock > 0 ? "Reserve Now" : "Stock Closed"}
             </button>
-
-            <br />
-            <div className="flex flex-col space-y-2">
-              <button className="btn btn-outline btn-sm w-fit">
-                Add To Wishlist
-              </button>
-              <button className="btn btn-outline btn-sm w-fit">
-                Ask a Question
-              </button>
-            </div>
           </div>
         </div>
       </div>

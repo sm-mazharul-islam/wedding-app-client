@@ -1,195 +1,297 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import DashboardLayout from "../../../Layout/DashboardLayout";
-
-// const Dashboard = () => {
-//   return (
-//     <div className="drawer lg:drawer-open">
-//       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-//       <div className="drawer-content flex flex-col items-center justify-center">
-//         {/* Page content here */}
-//         <DashboardLayout />
-//         <label
-//           htmlFor="my-drawer-2"
-//           className="btn btn-primary drawer-button lg:hidden"
-//         >
-//           Open drawer
-//         </label>
-//       </div>
-//       <div className="drawer-side">
-//         {/* <label
-//           htmlFor="my-drawer-2"
-//           aria-label="close sidebar"
-//           className="drawer-overlay"
-//         ></label> */}
-//         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-//           {/* Sidebar content here */}
-//           <li>
-//             <Link to="/">Home</Link>
-//           </li>
-//           <li>
-//             <Link to="allOrderProduct">All Order Product</Link>
-//           </li>
-//           <li>
-//             <Link to="add-reviews">Add reviews</Link>
-//           </li>
-//           <li>
-//             <Link to="create-admin">Create Admin</Link>
-//           </li>
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-//!
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import {
   LayoutGrid,
-  Box,
   Users,
   Store,
   BarChart3,
   Menu,
   X,
+  Package,
+  LogOut,
+  TrendingUp,
+  Zap,
+  Target,
+  Activity,
+  PlusCircle,
+  MessageSquare,
 } from "lucide-react";
+import { AuthContext } from "../../../contexts/AuthProvider";
 
 const Dashboard = () => {
+  const { user, logOut } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const isDashboardRoot = location.pathname === "/dashboard";
 
+  const {
+    data: stats = {},
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["dashboard-intelligence", user?.email],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://wedding-app-server-eight.vercel.app/dashboard-stats/${user?.email}`,
+      );
+      if (!res.ok) throw new Error("Network Error");
+      return res.json();
+    },
+    refetchInterval: 10000,
+    enabled: !!user?.email,
+  });
+
+  useEffect(() => {
+    const handleSync = () => refetch();
+    window.addEventListener("roleUpdated", handleSync);
+    return () => window.removeEventListener("roleUpdated", handleSync);
+  }, [refetch]);
+
+  if (isLoading)
+    return (
+      <div className="h-screen flex items-center justify-center font-black animate-pulse">
+        Syncing...
+      </div>
+    );
+
   return (
-    // 1. h-screen and overflow-hidden prevents the whole body from scrolling
-    <div className="flex h-screen bg-[#F4F4F4] font-sans text-[#1A1D1F] overflow-hidden">
+    <div className="flex h-screen bg-[#F8F9FA] font-sans text-[#1A1D1F] overflow-hidden">
       {/* MOBILE OVERLAY */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-md z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
-      {/* ================= SIDEBAR (FIXED) ================= */}
+      {/* SIDEBAR */}
       <aside
-        className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-[#F4F4F4] border-r border-gray-200 transform transition-transform duration-300 ease-in-out p-6
-        lg:translate-x-0 lg:static lg:block h-full
-        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-      `}
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-100 transform transition-transform duration-500 lg:translate-x-0 lg:static lg:block ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} p-8`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between mb-10 px-2">
-            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <div className="w-6 h-6 border-2 border-white rounded-sm rotate-45"></div>
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-10 h-10 bg-[#1A1D1F] rounded-xl flex items-center justify-center shadow-lg">
+              <Zap className="text-white" size={20} />
             </div>
-            <button
-              className="lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <X size={24} />
-            </button>
+            <h1 className="font-black text-xl tracking-tighter">PLANNER.IO</h1>
           </div>
-
           <nav className="flex-1 space-y-2 overflow-y-auto">
             <NavItem
               to="/dashboard"
               icon={<LayoutGrid size={20} />}
-              label="Dashboard"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <NavItem
-              to="all-packages"
-              icon={<LayoutGrid size={20} />}
-              label="All Packages"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <NavItem
-              to="add-package"
-              icon={<LayoutGrid size={20} />}
-              label="Add Package"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <NavItem
-              to="add-reviews"
-              icon={<Users size={20} />}
-              label="Add Reviews"
+              label="Overview"
               onClick={() => setIsSidebarOpen(false)}
             />
             <NavItem
               to="/"
               icon={<Store size={20} />}
-              label="Home"
+              label="Global Shop"
               onClick={() => setIsSidebarOpen(false)}
             />
-            <NavItem
-              to="add-cart"
-              icon={<BarChart3 size={20} />}
-              label="View Cart"
-              onClick={() => setIsSidebarOpen(false)}
-            />
+            {stats.role === "admin" ? (
+              <>
+                <NavItem
+                  to="all-packages"
+                  icon={<Package size={20} />}
+                  label="Inventory"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="manage-user"
+                  icon={<Users size={20} />}
+                  label="User Access"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="add-products"
+                  icon={<PlusCircle size={20} />}
+                  label="New Listing"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="add-package"
+                  icon={<PlusCircle size={20} />}
+                  label="New Package"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="manage-shop"
+                  icon={<PlusCircle size={20} />}
+                  label="Manage Shop"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="manage-review"
+                  icon={<MessageSquare size={20} />}
+                  label="Manage Reviews"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              </>
+            ) : (
+              <>
+                <NavItem
+                  to="add-cart"
+                  icon={<Package size={20} />}
+                  label="My Orders"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="add-reviews"
+                  icon={<Users size={20} />}
+                  label="Feedback"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              </>
+            )}
           </nav>
+          <button
+            onClick={logOut}
+            className="mt-auto flex items-center gap-3 p-4 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition-all"
+          >
+            <LogOut size={20} /> <span>Sign Out</span>
+          </button>
         </div>
       </aside>
 
-      {/* ================= MAIN CONTENT (SCROLLABLE) ================= */}
-      {/* 2. flex-1 and overflow-y-auto makes only this section scroll */}
-      <main className="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
-        {/* Mobile Header (Stays at top) */}
-        <header className="flex items-center justify-between p-4 lg:hidden bg-white border-b sticky top-0 z-30">
-          <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-white rounded-sm rotate-45"></div>
-          </div>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 overflow-y-auto p-4 md:p-10">
+        <header className="flex items-center justify-between mb-10">
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 bg-gray-100 rounded-lg"
+            className="lg:hidden p-3 bg-white rounded-xl shadow-sm border border-gray-100"
           >
-            <Menu size={20} />
+            <Menu />
           </button>
+          <div className="flex items-center gap-4 bg-white p-2 pr-6 rounded-2xl border border-gray-100 shadow-sm ml-auto">
+            <img
+              src={user?.photoURL || "https://i.ibb.co/5GzXkwq/user.png"}
+              className="w-10 h-10 rounded-xl object-cover"
+              alt=""
+            />
+            <div className="leading-tight">
+              <p className="font-black text-sm">
+                {user?.displayName?.split(" ")[0]}
+              </p>
+              <p className="text-[10px] text-primary font-bold uppercase">
+                {stats.role || "user"}
+              </p>
+            </div>
+          </div>
         </header>
 
-        <div className="p-4 md:p-8 lg:p-12 max-w-[1440px] w-full mx-auto">
-          {isDashboardRoot && (
-            <header className="mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Product overview
-              </h1>
-            </header>
-          )}
+        {isDashboardRoot ? (
+          <div className="animate-in slide-in-from-bottom-5 duration-700">
+            <h1 className="text-4xl font-black mb-2 text-[#1A1D1F] font-serif">
+              {stats.title || "Dashboard"}
+            </h1>
+            <p className="text-gray-400 mb-10 font-medium">
+              Predictive Intelligence & Activity Monitoring.
+            </p>
 
-          {/* This is where ViewCart or other components will render */}
-          <div className="bg-white rounded-[32px] p-4 md:p-8 shadow-sm border border-gray-100">
+            {/* METRIC CARDS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {stats.metrics?.map((m, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-6 rounded-[32px] border border-gray-50 shadow-sm hover:shadow-xl transition-all duration-500"
+                >
+                  <div
+                    className={`w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-4`}
+                  >
+                    <TrendingUp className="text-primary" size={22} />
+                  </div>
+                  <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">
+                    {m.label}
+                  </p>
+                  <div className="flex items-end justify-between">
+                    <h2 className="text-3xl font-black mt-1">{m.value}</h2>
+                    <span className="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-50">
+                      {m.growth}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CHART & PROBABILITY */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-2 bg-white p-10 rounded-[40px] border shadow-sm">
+                <h3 className="font-black text-xl mb-10">
+                  Distribution Metrics
+                </h3>
+                <div className="flex items-end gap-12 h-64 border-b pb-2">
+                  <Bar
+                    label="Orders"
+                    value={stats?.chartData?.orders || 0}
+                    color="bg-black"
+                  />
+                  <Bar
+                    label="Reviews"
+                    value={stats?.chartData?.reviews || 0}
+                    color="bg-yellow-400"
+                  />
+                  <Bar
+                    label="Engagement"
+                    value={stats?.chartData?.carts || 0}
+                    color="bg-primary"
+                  />
+                </div>
+              </div>
+              <div className="bg-[#1A1D1F] p-10 rounded-[40px] text-white relative overflow-hidden">
+                <Target
+                  className="absolute -right-10 -bottom-10 opacity-10"
+                  size={250}
+                />
+                <h3 className="text-xl font-bold mb-2">Success Probability</h3>
+                <div className="text-7xl font-black mb-4 tracking-tighter">
+                  {stats?.probability || "0%"}
+                </div>
+                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-1000"
+                    style={{ width: stats?.probability || "0%" }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-[40px] p-8 shadow-sm border border-gray-100 min-h-full">
             <Outlet />
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
 };
 
 const NavItem = ({ to, icon, label, onClick }) => (
-  <li>
-    <NavLink
-      to={to}
-      onClick={onClick}
-      end
-      className={({ isActive }) =>
-        `flex items-center justify-between px-3 py-2 rounded-xl font-medium transition-all ${
-          isActive
-            ? "bg-white shadow-sm text-black"
-            : "text-gray-500 hover:bg-white"
-        }`
-      }
-    >
-      <div className="flex items-center gap-3">
-        {icon}
-        <span>{label}</span>
-      </div>
-    </NavLink>
-  </li>
+  <NavLink
+    to={to}
+    onClick={onClick}
+    end
+    className={({ isActive }) =>
+      `flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition-all ${isActive ? "bg-[#1A1D1F] text-white shadow-2xl scale-105" : "text-gray-400 hover:bg-gray-50 hover:text-black"}`
+    }
+  >
+    {icon} <span>{label}</span>
+  </NavLink>
+);
+
+const Bar = ({ label, value, color }) => (
+  <div className="flex-1 flex flex-col items-center gap-4 h-full justify-end group">
+    <div
+      className={`w-20 ${color} rounded-2xl transition-all duration-1000`}
+      style={{
+        height: `${Math.min((value / 15) * 100, 100)}%`,
+        minHeight: value > 0 ? "20px" : "6px",
+      }}
+    />
+    <span className="text-[10px] font-black text-gray-400 uppercase">
+      {label}
+    </span>
+  </div>
 );
 
 export default Dashboard;

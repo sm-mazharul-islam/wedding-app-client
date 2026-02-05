@@ -1,28 +1,26 @@
-// const AddReviews = () => {
-//   return (
-//     <div>
-//       <h1>This is Review page</h1>
-//     </div>
-//   );
-// };
-
-// export default AddReviews;
-//!
-
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2"; // Optional: For beautiful alerts
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../../contexts/AuthProvider";
 
 const AddReviews = () => {
   const { register, handleSubmit, reset } = useForm();
+  const { user } = useContext(AuthContext);
+
   const onSubmit = (data) => {
+    // এখানে ডাটাবেজে পাঠানোর আগে প্রসেসিং করা হচ্ছে
     const reviewData = {
-      ...data,
-      image: data.image || "https://i.ibb.co/NTDwNc7/image.webp",
-      date: new Date().toLocaleDateString(),
+      userName: user?.displayName || data.name,
+      userEmail: user?.email,
+      // 'star' কে স্ট্রিং থেকে নম্বরে রূপান্তর করা হলো (Critical Fix)
+      rating: Number(data.star),
+      reviewText: data.description,
+      image:
+        data.image || user?.photoURL || "https://i.ibb.co/NTDwNc7/image.webp",
+      date: new Date().toISOString(), // সঠিক ডেট ফরম্যাট
     };
 
-    fetch("http://localhost:5000/reviews", {
+    fetch("https://wedding-app-server-eight.vercel.app/reviews", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -30,111 +28,105 @@ const AddReviews = () => {
       body: JSON.stringify(reviewData),
     })
       .then((res) => {
-        // Safety check: If response is not OK, log the status
-        if (!res.ok) {
-          throw new Error(`Server returned status ${res.status}`);
-        }
+        if (!res.ok) throw new Error("Submission failed");
         return res.json();
       })
       .then((result) => {
         if (result.insertedId) {
           Swal.fire({
-            title: "Success!",
-            text: "Your review has been posted.",
+            title: "Review Posted!",
+            text: "আপনার মূল্যবান মতামতটি ডেটাবেজে নম্বর হিসেবে জমা হয়েছে।",
             icon: "success",
-            confirmButtonColor: "#1A1D1F",
+            timer: 2000,
+            showConfirmButton: false,
           });
           reset();
         }
       })
       .catch((error) => {
-        console.error("Fetch Error:", error);
-        alert("Submission failed. Check the console for details.");
+        console.error("Error:", error);
+        Swal.fire("Error", "সার্ভারের সাথে সংযোগ করা যাচ্ছে না।", "error");
       });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[70vh] p-4">
-      <div className="card w-full max-w-2xl bg-base-100 shadow-2xl border border-gray-100">
+    <div className="flex justify-center items-center min-h-[70vh] p-4 bg-gray-50 animate-in fade-in duration-700">
+      <div className="card w-full max-w-2xl bg-white shadow-2xl rounded-[32px] border border-gray-100">
         <div className="card-body p-8 md:p-12">
-          {/* Form Header */}
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-serif font-bold text-neutral">
+            <h2 className="text-3xl font-serif font-bold text-[#1A1D1F]">
               Share Your Experience
             </h2>
             <p className="text-gray-400 mt-2 italic">
-              Your feedback helps our wedding community grow.
+              আপনার দেওয়া রেটিং সরাসরি আমাদের চার্টে প্রভাব ফেলবে।
             </p>
-            <div className="divider w-24 mx-auto border-primary"></div>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name Input */}
+              {/* Name */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Your Name</span>
+                <label className="label text-xs font-bold uppercase text-gray-400 tracking-widest">
+                  Display Name
                 </label>
                 <input
                   type="text"
-                  placeholder="Anna Mary"
+                  defaultValue={user?.displayName || ""}
                   {...register("name", { required: true })}
-                  className="input input-bordered focus:input-primary transition-all bg-gray-50"
+                  className="input input-bordered rounded-xl bg-gray-50 focus:ring-primary"
                 />
               </div>
 
-              {/* Rating (Star) Input */}
+              {/* Rating Dropdown */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Rating</span>
+                <label className="label text-xs font-bold uppercase text-gray-400 tracking-widest">
+                  Select Rating
                 </label>
                 <select
                   {...register("star", { required: true })}
-                  className="select select-bordered focus:select-primary bg-gray-50"
+                  className="select select-bordered rounded-xl bg-gray-50"
                 >
-                  <option value="5">5 Stars - Perfection</option>
-                  <option value="4">4 Stars - Great</option>
-                  <option value="3">3 Stars - Good</option>
-                  <option value="2">2 Stars - Average</option>
-                  <option value="1">1 Star - Poor</option>
+                  <option value="5">5 - Excellent</option>
+                  <option value="4">4 - Very Good</option>
+                  <option value="3">3 - Average</option>
+                  <option value="2">2 - Poor</option>
+                  <option value="1">1 - Terrible</option>
                 </select>
               </div>
             </div>
 
-            {/* Image URL Input */}
+            {/* Profile Image */}
             <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">
-                  Profile Image URL
-                </span>
+              <label className="label text-xs font-bold uppercase text-gray-400 tracking-widest">
+                Profile Photo URL
               </label>
               <input
                 type="text"
-                placeholder="https://i.ibb.co/..."
+                defaultValue={user?.photoURL || ""}
                 {...register("image")}
-                className="input input-bordered focus:input-primary bg-gray-50"
+                className="input input-bordered rounded-xl bg-gray-50"
               />
             </div>
 
             {/* Review Description */}
             <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Your Story</span>
+              <label className="label text-xs font-bold uppercase text-gray-400 tracking-widest">
+                Review Details
               </label>
               <textarea
-                placeholder="Tell us about your wedding experience..."
+                placeholder="আপনার অভিজ্ঞতা বিস্তারিত লিখুন..."
                 {...register("description", { required: true })}
-                className="textarea textarea-bordered focus:textarea-primary h-32 bg-gray-50 text-base"
+                className="textarea textarea-bordered h-32 rounded-xl bg-gray-50"
               ></textarea>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div className="form-control mt-8">
               <button
                 type="submit"
-                className="btn btn-primary btn-lg normal-case text-lg shadow-lg hover:shadow-primary/30 transition-all"
+                className="btn btn-primary btn-lg rounded-2xl normal-case shadow-lg"
               >
-                Post Review
+                Post Review Now
               </button>
             </div>
           </form>

@@ -3,7 +3,7 @@ import WeddingShopItemCard from "./WeddingShopItemCard";
 
 const WeddingShopItem = ({ item, setItem }) => {
   useEffect(() => {
-    fetch("http://localhost:5000/weddingShop")
+    fetch("https://wedding-app-server-eight.vercel.app/weddingShop")
       .then((res) => res.json())
       .then((data) => setItem(data));
   }, []);

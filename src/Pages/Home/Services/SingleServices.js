@@ -8,7 +8,9 @@ const SingleServices = () => {
   const { data: service = {}, isLoading } = useQuery({
     queryKey: ["singleService", _id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/servicesPackage/${_id}`);
+      const res = await fetch(
+        `https://wedding-app-server-eight.vercel.app/servicesPackage/${_id}`,
+      );
       return res.json();
     },
   });

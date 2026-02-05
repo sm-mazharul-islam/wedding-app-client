@@ -35,3 +35,4 @@ const WeddingShopItemCard = ({ product }) => {
 };
 
 export default WeddingShopItemCard;
+//!

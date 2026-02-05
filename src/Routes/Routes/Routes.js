@@ -5,7 +5,6 @@ import Appointment from "../../Pages/Appointment/Appointment/Appointment";
 import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
-import SingUp from "../../Pages/SignUp/SingUp";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import SingleServices from "../../Pages/Home/Services/SingleServices";
 import WeddingShop from "../../Pages/WeddingShop/WeddingShop/WeddingShop";
@@ -21,6 +20,13 @@ import ViewCart from "../../Pages/Dashboard/Dashboard/DashboardHome/ViewCart/Vie
 import AllPackage from "../../Pages/Dashboard/Dashboard/DashboardHome/AllPackage/AllPackage";
 import AddPackage from "../../Pages/Dashboard/Dashboard/DashboardHome/AddPackage/AddPackage";
 import DashboardHome from "../../Pages/Dashboard/Dashboard/DashboardHome/DashboardHome";
+import Gallery from "../../Pages/Gallery/Gallery";
+import EventCoordination from "../../Pages/EventCoordination/EventCoordination";
+import SignUp from "../../Pages/SignUp/SignUp";
+import ManageUser from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageUser/ManageUser";
+import ManageWeddingShop from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageWeddingShop/ManageWeddingShop";
+import ManageReviews from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageReviews/ManageReviews";
+import FindYourMatch from "../../Pages/FindYourMatch/FindYourMatch";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +43,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SingUp></SingUp>,
+        element: <SignUp></SignUp>,
       },
       {
-        path: "/appointment",
-        element: <Appointment></Appointment>,
+        path: "/gallery",
+        element: <Gallery></Gallery>,
+      },
+      {
+        path: "/findYourMatch",
+        element: <FindYourMatch />,
       },
 
       {
@@ -51,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About></About>,
+      },
+      {
+        path: "/eventCoordination",
+        element: <EventCoordination></EventCoordination>,
       },
       {
         path: "/weddingShop",
@@ -68,7 +82,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true, // This makes it the default view for /dashboard
@@ -102,6 +120,18 @@ const router = createBrowserRouter([
       {
         path: "add-cart",
         element: <ViewCart />,
+      },
+      {
+        path: "manage-user",
+        element: <ManageUser />,
+      },
+      {
+        path: "manage-shop",
+        element: <ManageWeddingShop />,
+      },
+      {
+        path: "manage-review",
+        element: <ManageReviews />,
       },
     ],
     // element: (
