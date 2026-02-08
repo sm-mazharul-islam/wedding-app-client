@@ -27,6 +27,7 @@ import ManageUser from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageUser
 import ManageWeddingShop from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageWeddingShop/ManageWeddingShop";
 import ManageReviews from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageReviews/ManageReviews";
 import FindYourMatch from "../../Pages/FindYourMatch/FindYourMatch";
+import FindYourMatchDetail from "../../Pages/FindYourMatch/FindYourMatchDetail";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/findYourMatch",
         element: <FindYourMatch />,
+      },
+      {
+        path: "/findYourMatch/:id",
+        element: <FindYourMatchDetail />,
       },
 
       {

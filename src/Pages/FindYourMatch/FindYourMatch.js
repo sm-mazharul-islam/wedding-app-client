@@ -1,249 +1,302 @@
-import React, { useState } from "react";
-import { Search, Filter, Heart, MapPin, Coffee, Sparkles } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Filter,
+  Heart,
+  MapPin,
+  Sparkles,
+  Star,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const FindYourMatch = () => {
-  // Demo Data for your CSE/Web Dev Portfolio vibes
-  const profiles = [
-    {
-      id: 1,
-      name: "S M Mazharul",
-      role: "Next.js Expert",
-      location: "Dhaka, BD",
-      match: "99%",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-    },
-    {
-      id: 2,
-      name: "Sarah J.",
-      role: "UI/UX Designer",
-      location: "Remote",
-      match: "95%",
-      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
-    },
-    {
-      id: 3,
-      name: "Tanvir Ahsan",
-      role: "Backend Developer",
-      location: "Chittagong, BD",
-      match: "88%",
-      img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400",
-    },
-    {
-      id: 4,
-      name: "Aliza Khan",
-      role: "React Specialist",
-      location: "Sylhet, BD",
-      match: "82%",
-      img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
-    },
-  ];
+  const [profiles, setProfiles] = useState([]);
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedReligion, setSelectedReligion] = useState("All");
+  const [maxAge, setMaxAge] = useState(50);
 
-  // Theme Colors
-  const navBg = "#FAF7F6";
-  const chocolateDark = "#3E2723"; // Deep Espresso
-  const chocolateMain = "#5D4037"; // Rich Cocoa
-  const chocolateLight = "#D7CCC8"; // Milky Chocolate
+  // প্যাজিনেশন স্টেট
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // ১. JSON ডাটা ফেচ করা
+  useEffect(() => {
+    // আপনার লোকাল বা অনলাইন findYourMatch.json থেকে ডাটা ফেচ
+    fetch("/findYourMatch.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setProfiles(data);
+        setFilteredProfiles(data);
+      })
+      .catch((err) => console.error("Error fetching data:", err));
+  }, []);
+
+  // ২. ফিল্টারিং লজিক (নাম, লোকেশন, ধর্ম এবং বয়স)
+  useEffect(() => {
+    const filtered = profiles.filter((profile) => {
+      const matchesSearch =
+        profile.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        profile.address.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesReligion =
+        selectedReligion === "All" || profile.religion === selectedReligion;
+
+      const matchesAge = profile.age <= maxAge;
+
+      return matchesSearch && matchesReligion && matchesAge;
+    });
+
+    setFilteredProfiles(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, selectedReligion, maxAge, profiles]);
+
+  // ৩. প্যাজিনেশন ক্যালকুলেশন
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProfiles = filteredProfiles.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
+  const totalPages = Math.ceil(filteredProfiles.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const romanticBg = "#FFF5F5";
+  const heartRed = "#E53E3E";
+  const charcoal = "#2D3748";
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#FFFFFF" }}>
-      {/* --- Navbar (Using your specific color) --- */}
-      {/* <nav
-        style={{ backgroundColor: navBg }}
-        className="border-b sticky top-0 z-50 shadow-sm"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center gap-8">
-              <span
-                className="text-xl font-black tracking-tighter"
-                style={{ color: chocolateDark }}
-              >
-                MILE <span style={{ color: chocolateMain }}>SNAP</span>
-              </span>
-              <div className="hidden md:flex space-x-6 text-sm font-bold uppercase tracking-wide">
-                <a
-                  href="#"
-                  className="hover:opacity-70 transition"
-                  style={{ color: chocolateMain }}
-                >
-                  Home
-                </a>
-                <a
-                  href="#"
-                  className="border-b-2 pb-1"
-                  style={{ color: chocolateDark, borderColor: chocolateDark }}
-                >
-                  Find Your Match
-                </a>
-                <a
-                  href="#"
-                  className="hover:opacity-70 transition"
-                  style={{ color: chocolateMain }}
-                >
-                  Projects
-                </a>
-              </div>
-            </div>
-            <button
-              className="px-4 py-2 rounded-full text-xs font-bold text-white transition-all hover:scale-105"
-              style={{ backgroundColor: chocolateDark }}
-            >
-              HIRE ME
-            </button>
-          </div>
-        </div>
-      </nav> */}
-
-      {/* --- Main Content --- */}
+    <div className="min-h-screen bg-white font-sans text-[#1A1D1F]">
       <main className="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-10">
-        {/* Sidebar Filter */}
+        {/* --- Sidebar Filter --- */}
         <aside className="w-full lg:w-72">
           <div
-            className="p-8 rounded-3xl sticky top-24 border border-stone-100"
-            style={{ backgroundColor: navBg }}
+            className="p-8 rounded-[2.5rem] sticky top-24 border border-rose-100 shadow-sm"
+            style={{ backgroundColor: romanticBg }}
           >
             <h3
-              className="font-bold text-lg mb-6 flex items-center gap-2"
-              style={{ color: chocolateDark }}
+              className="font-bold text-xl mb-6 flex items-center gap-2"
+              style={{ color: heartRed }}
             >
-              <Filter size={20} /> Preferences
+              <Filter size={20} /> Criteria
             </h3>
 
             <div className="space-y-6">
               <div>
-                <label
-                  className="text-xs font-black uppercase tracking-widest block mb-3"
-                  style={{ color: chocolateMain }}
-                >
-                  Tech Stack
+                <label className="text-xs font-black uppercase tracking-widest block mb-3 text-rose-400">
+                  Religion
                 </label>
-                <select className="w-full p-3 bg-white border-none rounded-xl text-sm shadow-inner focus:ring-2 focus:ring-stone-200 outline-none">
-                  <option>Next.js / React</option>
-                  <option>Tailwind CSS</option>
-                  <option>TypeScript</option>
-                  <option>Java / Spring Boot</option>
+                <select
+                  className="w-full p-3 bg-white border border-rose-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-rose-200"
+                  value={selectedReligion}
+                  onChange={(e) => setSelectedReligion(e.target.value)}
+                >
+                  <option value="All">All Communities</option>
+                  <option value="Muslim">Muslim</option>
+                  <option value="Christian">Christian</option>
                 </select>
               </div>
 
               <div>
-                <label
-                  className="text-xs font-black uppercase tracking-widest block mb-3"
-                  style={{ color: chocolateMain }}
-                >
-                  Proximity
+                <label className="text-xs font-black uppercase tracking-widest block mb-3 text-rose-400">
+                  Max Age:{" "}
+                  <span className="text-rose-600 font-black">{maxAge} yrs</span>
                 </label>
-                <input type="range" className="w-full accent-amber-900" />
+                <input
+                  type="range"
+                  min="18"
+                  max="50"
+                  value={maxAge}
+                  onChange={(e) => setMaxAge(parseInt(e.target.value))}
+                  className="w-full accent-rose-500 cursor-pointer"
+                />
               </div>
 
-              <div className="pt-4">
-                <button
-                  className="w-full py-3 rounded-xl font-bold text-sm shadow-lg transition-transform active:scale-95"
-                  style={{ backgroundColor: chocolateMain, color: "#FFF" }}
-                >
-                  Apply Filters
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedReligion("All");
+                  setMaxAge(50);
+                }}
+                className="w-full py-3 rounded-xl font-bold text-sm shadow-lg text-white"
+                style={{ backgroundColor: heartRed }}
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
         </aside>
 
-        {/* Results Section */}
-        <section className="flex-1">
+        {/* --- Results Section --- */}
+        <section className="flex-1 text-left">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
-            <div>
-              <h2
-                className="text-4xl font-black leading-tight"
-                style={{ color: chocolateDark }}
-              >
-                Find Your <br />{" "}
-                <span className="text-stone-400">Coding Partner</span>
-              </h2>
-            </div>
+            <h2
+              className="text-4xl font-black italic tracking-tighter uppercase"
+              style={{ color: charcoal }}
+            >
+              Wedding <span className="text-rose-400">Connections</span>
+            </h2>
+
             <div className="relative group">
               <Search
-                className="absolute left-4 top-3.5 text-stone-400 group-focus-within:text-amber-900 transition-colors"
+                className="absolute left-4 top-3.5 text-rose-200 group-focus-within:text-rose-500 transition-colors"
                 size={20}
               />
               <input
                 type="text"
-                placeholder="Search by name or skill..."
-                className="pl-12 pr-6 py-3.5 bg-stone-50 border-none rounded-2xl w-full md:w-80 shadow-inner focus:ring-2 focus:ring-stone-200 outline-none"
+                placeholder="Search by name or city..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-12 pr-6 py-3.5 bg-rose-50/30 border border-rose-50 rounded-2xl w-full md:w-80 shadow-inner outline-none font-medium"
               />
             </div>
           </div>
 
-          {/* User Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {profiles.map((profile) => (
-              <div
-                key={profile.id}
-                className="group relative bg-white p-6 rounded-[2rem] border border-stone-100 hover:border-amber-100 transition-all duration-300 hover:shadow-2xl hover:shadow-stone-200/50"
-              >
-                <div className="flex gap-5">
-                  <div className="relative">
+            {currentProfiles.length > 0 ? (
+              currentProfiles.map((profile) => (
+                <div
+                  key={profile.id}
+                  className="group relative bg-white rounded-[3rem] overflow-hidden border border-rose-50 hover:border-rose-200 transition-all duration-500 hover:shadow-2xl"
+                >
+                  {/* Image */}
+                  <div className="relative h-72 overflow-hidden">
                     <img
-                      src={profile.img}
-                      className="w-28 h-28 rounded-[1.5rem] object-cover shadow-md transition-transform group-hover:rotate-2"
+                      src={profile.image}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       alt={profile.name}
                     />
-                    <div className="absolute -bottom-2 -right-2 bg-white p-1.5 rounded-full shadow-sm">
-                      <Sparkles size={14} className="text-amber-600" />
+                    <div className="absolute top-5 left-5 bg-white/90 px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                      <Star size={14} className="fill-rose-500 text-rose-500" />
+                      <span className="text-xs font-black text-rose-600 italic">
+                        #{profile.id}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex-1 pt-2">
-                    <div className="flex justify-between items-start">
+                  {/* Profile Details (Using Info from JSON) */}
+                  <div className="p-8">
+                    <div className="flex justify-between items-center mb-1">
                       <h4
-                        className="font-extrabold text-xl"
-                        style={{ color: chocolateDark }}
+                        className="font-black text-2xl tracking-tighter uppercase italic"
+                        style={{ color: charcoal }}
                       >
-                        {profile.name}
+                        {profile.name}, {profile.age}
                       </h4>
-                      <div
-                        className="text-[10px] font-black px-2 py-1 rounded-md uppercase tracking-tighter"
-                        style={{
-                          backgroundColor: chocolateLight,
-                          color: chocolateDark,
-                        }}
-                      >
-                        {profile.match}
-                      </div>
+                      <Users size={16} className="text-rose-500" />
                     </div>
-                    <p className="font-medium text-stone-500 text-sm mt-1">
-                      {profile.role}
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="text-[10px] font-bold px-2 py-1 bg-stone-100 rounded text-stone-500 uppercase">
+                        {profile.status}
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-1 bg-rose-50 rounded text-rose-500 uppercase">
+                        {profile.professionalInfo.category}
+                      </span>
+                    </div>
+
+                    <p className="text-stone-400 text-xs font-bold mb-6 line-clamp-1 italic">
+                      <GraduationCap className="inline mr-1" size={14} />{" "}
+                      {profile.academicStatus.honors}
                     </p>
-                    <div className="flex items-center text-stone-400 text-xs mt-3 gap-1 font-bold">
-                      <MapPin size={14} /> {profile.location}
+
+                    <div className="flex items-center text-stone-400 text-xs gap-1 font-bold mb-8">
+                      <MapPin size={14} className="text-rose-300" />{" "}
+                      {profile.address}
+                    </div>
+
+                    <div className="flex gap-3">
+                      <Link
+                        to={`/findYourMatch/${profile.id}`}
+                        className="flex-[4]"
+                      >
+                        <button
+                          className="w-full text-white py-4 rounded-2xl font-bold text-sm shadow-xl transition-all active:scale-95 uppercase tracking-widest"
+                          style={{ backgroundColor: heartRed }}
+                        >
+                          View Bio-Data
+                        </button>
+                      </Link>
+                      <button className="flex-1 flex items-center justify-center border-2 rounded-2xl border-rose-100 hover:bg-rose-50 transition-all">
+                        <Heart
+                          size={20}
+                          className="text-rose-200 hover:text-rose-500 transition-colors"
+                        />
+                      </button>
                     </div>
                   </div>
                 </div>
-
-                <div className="mt-8 flex gap-3">
-                    <Link to=""></Link>
-                  <button
-                    className="flex-[3] text-white py-3.5 rounded-2xl font-bold text-sm transition-all hover:brightness-110 active:scale-95 shadow-md"
-                    style={{ backgroundColor: chocolateDark }}
-                  >
-                    Connect Now
-                  </button>
-                  <button
-                    className="flex-1 flex items-center justify-center border-2 rounded-2xl transition-all hover:bg-red-50 hover:border-red-100 group/heart"
-                    style={{ borderColor: chocolateLight }}
-                  >
-                    <Heart
-                      size={20}
-                      className="text-stone-300 group-hover/heart:text-red-500 transition-colors"
-                    />
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-24 bg-rose-50/20 rounded-[4rem] text-center border-2 border-dashed border-rose-100">
+                <Sparkles
+                  size={48}
+                  className="mx-auto text-rose-200 mb-4 animate-pulse"
+                />
+                <p className="text-rose-300 font-bold italic text-lg">
+                  No biodata found matching your criteria.
+                </p>
               </div>
-            ))}
+            )}
           </div>
+
+          {/* --- Pagination Controls --- */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-3 mt-16 pb-10">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => paginate(currentPage - 1)}
+                className="p-3 rounded-xl border border-rose-100 hover:bg-rose-500 hover:text-white transition-all disabled:opacity-30"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => paginate(index + 1)}
+                  className={`w-12 h-12 rounded-xl font-bold border transition-all ${currentPage === index + 1 ? "bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-200" : "bg-white text-rose-300 border-rose-50 hover:border-rose-200"}`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => paginate(currentPage + 1)}
+                className="p-3 rounded-xl border border-rose-100 hover:bg-rose-500 hover:text-white transition-all disabled:opacity-30"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>
   );
 };
+
+// Helper Icon for card
+const GraduationCap = ({ size, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+  </svg>
+);
 
 export default FindYourMatch;

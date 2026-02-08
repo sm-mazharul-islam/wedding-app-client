@@ -1,0 +1,212 @@
+[
+  {
+    "id": "1",
+    "type": "Groom",
+    "name": "Arifur Rahman",
+    "status": "Never Married",
+    "birthYear": 1995,
+    "age": 31,
+    "religion": "Muslim",
+    "address": "Banani, Dhaka",
+    "contact": "+8801711223344",
+    "email": "arif.rahman@email.com",
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600",
+    "physicalAttributes": {
+      "height": "5'10\"",
+      "weight": "78 kg",
+      "bodyColor": "Fair"
+    },
+    "academicStatus": {
+      "ssc": "GPA 5.00",
+      "hsc": "GPA 5.00",
+      "honors": "B.Sc in Electrical Engineering (BUET)"
+    },
+    "professionalInfo": {
+      "jobStatus": "Job Holder",
+      "category": "Engineering",
+      "company": "Energypac Ltd.",
+      "experience": "6 Years",
+      "salary": "95,000 BDT"
+    },
+    "familyDetails": {
+      "fatherName": "Md. Abdur Razzak",
+      "fatherProfession": "Retired Banker",
+      "motherName": "Salma Begum",
+      "motherProfession": "Housewife",
+      "totalSiblings": 2,
+      "childOrder": "1st (Eldest)",
+      "brothers": 1,
+      "sisters": 0
+    },
+    "expectations": "Looking for a well-educated and family-oriented partner.",
+    "personalBio": "A career-focused person who loves traveling and spending time with family."
+  },
+  {
+    "id": "2",
+    "type": "Bride",
+    "name": "Nusrat Jahan",
+    "status": "Never Married",
+    "birthYear": 1999,
+    "age": 27,
+    "religion": "Muslim",
+    "address": "Nasirabad, Chittagong",
+    "contact": "+8801822334455",
+    "email": "nusrat.jahan@email.com",
+    "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600",
+    "physicalAttributes": {
+      "height": "5'4\"",
+      "weight": "58 kg",
+      "bodyColor": "Bright Fair"
+    },
+    "academicStatus": {
+      "ssc": "GPA 5.00",
+      "hsc": "GPA 4.90",
+      "honors": "MBBS (Chittagong Medical College)"
+    },
+    "professionalInfo": {
+      "jobStatus": "Job Holder",
+      "category": "Medical",
+      "company": "Evercare Hospital",
+      "experience": "2 Years",
+      "salary": "60,000 BDT"
+    },
+    "familyDetails": {
+      "fatherName": "Dr. Shafiqul Islam",
+      "fatherProfession": "Doctor",
+      "motherName": "Rina Akter",
+      "motherProfession": "Teacher",
+      "totalSiblings": 3,
+      "childOrder": "2nd (Middle)",
+      "brothers": 0,
+      "sisters": 2
+    },
+    "expectations": "Looking for a supportive person from a medical or engineering background.",
+    "personalBio": "Dedicated professional with a passion for helping people."
+  },
+  {
+    "id": "3",
+    "type": "Groom",
+    "name": "Tanvir Ahmed",
+    "status": "Never Married",
+    "birthYear": 1994,
+    "age": 32,
+    "religion": "Muslim",
+    "address": "Uposhohor, Sylhet",
+    "contact": "+8801933445566",
+    "email": "tanvir.ahmed@email.com",
+    "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600",
+    "physicalAttributes": {
+      "height": "5'9\"",
+      "weight": "75 kg",
+      "bodyColor": "Wheatish"
+    },
+    "academicStatus": {
+      "ssc": "GPA 4.50",
+      "hsc": "GPA 4.20",
+      "honors": "MBA in Finance (IBA, DU)"
+    },
+    "professionalInfo": {
+      "jobStatus": "Job Holder",
+      "category": "Banking",
+      "company": "Dutch-Bangla Bank Ltd.",
+      "experience": "7 Years",
+      "salary": "1,10,000 BDT"
+    },
+    "familyDetails": {
+      "fatherName": "Late Kamrul Hasan",
+      "fatherProfession": "Businessman",
+      "motherName": "Dilara Begum",
+      "motherProfession": "Housewife",
+      "totalSiblings": 4,
+      "childOrder": "4th (Youngest)",
+      "brothers": 2,
+      "sisters": 1
+    },
+    "expectations": "Seeking an educated girl who values religious ethics.",
+    "personalBio": "Simple, honest, and enjoys photography as a hobby."
+  },
+  {
+    "id": "4",
+    "type": "Bride",
+    "name": "Farhana Yasmin",
+    "status": "Never Married",
+    "birthYear": 2001,
+    "age": 25,
+    "religion": "Muslim",
+    "address": "Uposhohor, Rajshahi",
+    "contact": "+8801544556677",
+    "email": "farhana.yasmin@email.com",
+    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600",
+    "physicalAttributes": {
+      "height": "5'2\"",
+      "weight": "52 kg",
+      "bodyColor": "Fair"
+    },
+    "academicStatus": {
+      "ssc": "GPA 5.00",
+      "hsc": "GPA 5.00",
+      "honors": "B.A. in English (Rajshahi University)"
+    },
+    "professionalInfo": {
+      "jobStatus": "Intern/Student",
+      "category": "Education",
+      "company": "British Council (Intern)",
+      "experience": "6 Months",
+      "salary": "20,000 BDT"
+    },
+    "familyDetails": {
+      "fatherName": "Anwar Hossain",
+      "fatherProfession": "Professor",
+      "motherName": "Zohra Khatun",
+      "motherProfession": "Housewife",
+      "totalSiblings": 2,
+      "childOrder": "2nd (Youngest)",
+      "brothers": 1,
+      "sisters": 0
+    },
+    "expectations": "Partner should be well-settled and respectful toward parents.",
+    "personalBio": "Soft-spoken, loves reading books and gardening."
+  },
+  {
+    "id": "5",
+    "type": "Groom",
+    "name": "Sajid Bin Alam",
+    "status": "Never Married",
+    "birthYear": 1997,
+    "age": 29,
+    "religion": "Muslim",
+    "address": "Uttara, Dhaka",
+    "contact": "+8801355667788",
+    "email": "sajid.alam@email.com",
+    "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600",
+    "physicalAttributes": {
+      "height": "5'11\"",
+      "weight": "82 kg",
+      "bodyColor": "Fair"
+    },
+    "academicStatus": {
+      "ssc": "GPA 5.00",
+      "hsc": "GPA 4.90",
+      "honors": "B.Sc in Software Engineering (NSU)"
+    },
+    "professionalInfo": {
+      "jobStatus": "Job Holder",
+      "category": "Software",
+      "company": "Tiger IT Bangladesh",
+      "experience": "5 Years",
+      "salary": "1,25,000 BDT"
+    },
+    "familyDetails": {
+      "fatherName": "Alamgir Kabir",
+      "fatherProfession": "Business",
+      "motherName": "Nasrin Sultana",
+      "motherProfession": "Housewife",
+      "totalSiblings": 1,
+      "childOrder": "Only Child",
+      "brothers": 0,
+      "sisters": 0
+    },
+    "expectations": "Looking for a modern yet family-oriented soulmate.",
+    "personalBio": "A tech enthusiast who loves outdoor activities and fitness."
+  }
+]
