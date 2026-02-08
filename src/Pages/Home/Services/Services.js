@@ -13,9 +13,7 @@ const Services = ({ limit, isFullView }) => {
   } = useQuery({
     queryKey: ["servicesPackage"],
     queryFn: async () => {
-      const res = await fetch(
-        "https://wedding-app-server-eight.vercel.app/servicesPackage",
-      );
+      const res = await fetch("http://localhost:5000/servicesPackage");
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

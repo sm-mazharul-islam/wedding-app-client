@@ -419,14 +419,11 @@ const ViewCart = () => {
           return Promise.resolve();
         }
 
-        return fetch(
-          `https://wedding-app-server-eight.vercel.app/servicesPackage/${targetId}`,
-          {
-            method: "PATCH",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ quantity: item.quantity }),
-          },
-        ).then((res) => {
+        return fetch(`http://localhost:5000/servicesPackage/${targetId}`, {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ quantity: item.quantity }),
+        }).then((res) => {
           if (!res.ok)
             throw new Error(`Stock update failed for ${item.packageName}`);
           return res.json();
@@ -438,17 +435,14 @@ const ViewCart = () => {
       //
 
       // ৩. DATABASE SYNC: ড্যাশবোর্ড আপডেট করার জন্য ডাটাবেজে পাঠানো
-      const syncResponse = await fetch(
-        "https://wedding-app-server-eight.vercel.app/cart",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            email: user?.email,
-            cartItems: validItems, // শুধুমাত্র ভ্যালিড আইটেমগুলো পাঠানো হচ্ছে
-          }),
-        },
-      );
+      const syncResponse = await fetch("http://localhost:5000/cart", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          email: user?.email,
+          cartItems: validItems, // শুধুমাত্র ভ্যালিড আইটেমগুলো পাঠানো হচ্ছে
+        }),
+      });
 
       if (!syncResponse.ok)
         throw new Error("Dashboard synchronization failed.");

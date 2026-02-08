@@ -9,7 +9,7 @@ const WeddingShopSingleItem = ({ detail, setDetail }) => {
   useEffect(() => {
     if (id) {
       // Fetching the specific wedding product details by ID
-      fetch(`https://wedding-app-server-eight.vercel.app/weddingShop/${id}`)
+      fetch(`http://localhost:5000/weddingShop/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setDetail(data);

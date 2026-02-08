@@ -20,7 +20,7 @@ const AddReviews = () => {
       date: new Date().toISOString(), // সঠিক ডেট ফরম্যাট
     };
 
-    fetch("https://wedding-app-server-eight.vercel.app/reviews", {
+    fetch("http://localhost:5000/reviews", {
       method: "POST",
       headers: {
         "content-type": "application/json",

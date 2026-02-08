@@ -27,7 +27,7 @@ const WeddingShopSingleItemCard = ({ detail }) => {
     queryKey: ["servicesPackage", productId],
     queryFn: async () => {
       const res = await fetch(
-        `https://wedding-app-server-eight.vercel.app/servicesPackage/${productId}`,
+        `http://localhost:5000/servicesPackage/${productId}`,
       );
       if (!res.ok) throw new Error("Failed to fetch live stock");
       return res.json();
@@ -101,7 +101,7 @@ const WeddingShopSingleItemCard = ({ detail }) => {
     };
 
     // ২. ডাটাবেজে পাঠানো
-    fetch("https://wedding-app-server-eight.vercel.app/orders", {
+    fetch("http://localhost:5000/orders", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(orderData),

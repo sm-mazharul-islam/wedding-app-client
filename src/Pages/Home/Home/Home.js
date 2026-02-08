@@ -8,6 +8,7 @@ import Reviews from "../Reviews/Reviews";
 import Services from "../Services/Services";
 import Statement from "../Statement/Statement";
 import ServicesPage from "../Services/ServicesPage";
+import EditorialOverlap from "../EditorialOverlap/EditorialOverlap";
 
 const Home = () => {
   return (
@@ -17,8 +18,10 @@ const Home = () => {
       <Offer />
       <Statement />
       <AmazingWork />
+      <EditorialOverlap />
       <Reviews />
       <ServicesPage />
+
       <InfoCards />
     </div>
   );

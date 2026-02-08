@@ -29,7 +29,7 @@ const AddPackage = () => {
       headerImage: data.headerImage || "https://i.ibb.co/FxryvZx/default.jpg",
     };
 
-    fetch("https://wedding-app-server-eight.vercel.app/servicesPackage", {
+    fetch("http://localhost:5000/servicesPackage", {
       method: "POST",
       headers: {
         "content-type": "application/json",

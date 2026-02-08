@@ -17,7 +17,7 @@ const Reviews = () => {
 
   // 2. Fetch data from the backend
   useEffect(() => {
-    fetch("https://wedding-app-server-eight.vercel.app/reviews")
+    fetch("http://localhost:5000/reviews")
       .then((res) => res.json())
       .then((data) => {
         // --- ফাংশনালিটি পরিবর্তন: শুধুমাত্র পিন করা রিভিউ ফিল্টার করা হচ্ছে ---

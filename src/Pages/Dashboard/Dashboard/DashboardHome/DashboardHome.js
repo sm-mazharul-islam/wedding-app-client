@@ -16,7 +16,7 @@ const DashboardHome = () => {
     queryKey: ["dashboard-stats", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `https://wedding-app-server-eight.vercel.app/dashboard-stats/${user?.email}`,
+        `http://localhost:5000/dashboard-stats/${user?.email}`,
       );
       return res.json();
     },

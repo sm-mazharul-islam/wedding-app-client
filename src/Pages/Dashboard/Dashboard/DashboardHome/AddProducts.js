@@ -26,14 +26,11 @@ const AddProducts = () => {
     };
 
     try {
-      const response = await fetch(
-        "https://wedding-app-server-eight.vercel.app/weddingShop",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(productData),
-        },
-      );
+      const response = await fetch("http://localhost:5000/weddingShop", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(productData),
+      });
 
       // এরর হ্যান্ডেলিং: যদি রেসপন্স JSON না হয়
       const contentType = response.headers.get("content-type");

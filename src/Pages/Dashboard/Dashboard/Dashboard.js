@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import one from "../../../Images/1.png";
+import two from "../../../Images/2.png";
+import three from "../../../Images/3.png";
+import four from "../../../Images/4.png";
 import {
   LayoutGrid,
   Users,
@@ -18,6 +22,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { AuthContext } from "../../../contexts/AuthProvider";
+import CaroselLogo from "../DesignCom/CaroselLogo/CaroselLogo";
 
 const Dashboard = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -33,7 +38,7 @@ const Dashboard = () => {
     queryKey: ["dashboard-intelligence", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `https://wedding-app-server-eight.vercel.app/dashboard-stats/${user?.email}`,
+        `http://localhost:5000/dashboard-stats/${user?.email}`,
       );
       if (!res.ok) throw new Error("Network Error");
       return res.json();
@@ -73,8 +78,11 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 mb-10">
             <div className="w-10 h-10 bg-[#1A1D1F] rounded-xl flex items-center justify-center shadow-lg">
               <Zap className="text-white" size={20} />
+              <CaroselLogo />
             </div>
-            <h1 className="font-black text-xl tracking-tighter">PLANNER.IO</h1>
+            <h1 className="font-black text-xl tracking-tighter">
+              Wedding Planer
+            </h1>
           </div>
           <nav className="flex-1 space-y-2 overflow-y-auto">
             <NavItem

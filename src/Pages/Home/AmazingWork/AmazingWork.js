@@ -31,7 +31,7 @@ const AmazingWork = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 bg-white overflow-hidden">
+    <section className="relative py-32 px-6 bg-white overflow-hidden mb-10">
       {/* DESIGNED BACKGROUND SHAPE:
         Top side remains your signature "W" wave.
         Bottom side now curves into a "Love/Heart" shape.
