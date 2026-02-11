@@ -117,7 +117,6 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-
   const { signIn, signUsingGoogle } = useContext(AuthContext);
   const [loginError, setLoginError] = useState("");
   const [isLogging, setIsLogging] = useState(false);
@@ -126,8 +125,11 @@ const Login = () => {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/dashboard";
 
-  // ডাটাবেজ সিঙ্ক বা চেক ফাংশন
+  // --- ডাটাবেজ এবং লোকাল স্টোরেজ সিঙ্ক ---
   const checkUserInDb = (user) => {
+    // ১. লোকাল স্টোরেজে ইমেইল সেভ করা (এটিই আপনার সমস্যার মূল সমাধান)
+    localStorage.setItem("userEmail", user.email);
+
     const currentUser = {
       email: user.email,
       name: user.displayName || user.email.split("@")[0],
@@ -135,7 +137,6 @@ const Login = () => {
       role: "user",
     };
 
-    // লগইনের সময় ডাটাবেজে ইউজার ইনফো আপডেট বা চেক করা
     fetch("http://localhost:5000/users", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -159,13 +160,14 @@ const Login = () => {
       })
       .catch((err) => {
         console.error("DB Sync Error:", err);
+        // DB এরর হলেও নেভিগেট করুন যাতে ইউজার আটকে না থাকে
+        navigate(from, { replace: true });
       });
   };
 
   const handleLogin = (data) => {
     setLoginError("");
     setIsLogging(true);
-
     signIn(data.email, data.password)
       .then((result) => {
         checkUserInDb(result.user);
@@ -187,8 +189,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAF7F6] p-4 md:p-8">
-      <div className="w-full max-w-[450px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-[40px] overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-700">
-        {/* Header Section */}
+      <div className="w-full max-w-[450px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-[40px] overflow-hidden border border-white/20">
         <div className="bg-[#1A1D1F] p-12 text-white text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl"></div>
           <h2 className="text-4xl font-black tracking-tighter mb-2 italic">
@@ -201,45 +202,35 @@ const Login = () => {
 
         <div className="p-8 md:p-10 bg-white">
           <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
-            {/* Email Field */}
             <div className="form-control group">
               <label className="label py-1">
-                <span className="label-text font-bold text-[11px] uppercase tracking-[2px] text-gray-400 group-focus-within:text-[#1A1D1F] transition-colors">
+                <span className="label-text font-bold text-[11px] uppercase tracking-[2px] text-gray-400">
                   Email Address
                 </span>
               </label>
               <div className="relative">
                 <Mail
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1D1F] transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"
                   size={18}
                 />
                 <input
                   type="email"
                   placeholder="name@example.com"
                   {...register("email", { required: "Email is required" })}
-                  className="input w-full pl-12 bg-[#FAF7F6] border-none rounded-2xl focus:ring-2 focus:ring-[#1A1D1F]/5 text-sm h-14 font-medium placeholder:text-gray-300"
+                  className="input w-full pl-12 bg-[#FAF7F6] border-none rounded-2xl h-14 font-medium"
                 />
               </div>
-              {errors.email && (
-                <p className="text-red-500 text-[10px] mt-2 ml-1 font-bold italic">
-                  {errors.email.message}
-                </p>
-              )}
             </div>
 
-            {/* Password Field */}
             <div className="form-control group">
-              <label className="label py-1 flex justify-between items-center">
-                <span className="label-text font-bold text-[11px] uppercase tracking-[2px] text-gray-400 group-focus-within:text-[#1A1D1F] transition-colors">
+              <label className="label py-1 flex justify-between">
+                <span className="label-text font-bold text-[11px] uppercase tracking-[2px] text-gray-400">
                   Password
                 </span>
-                <Link className="text-[10px] font-black text-[#1A1D1F] hover:underline underline-offset-2">
-                  Forgot Password?
-                </Link>
               </label>
               <div className="relative">
                 <Lock
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1D1F] transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"
                   size={18}
                 />
                 <input
@@ -248,54 +239,41 @@ const Login = () => {
                   {...register("password", {
                     required: "Password is required",
                   })}
-                  className="input w-full pl-12 bg-[#FAF7F6] border-none rounded-2xl focus:ring-2 focus:ring-[#1A1D1F]/5 text-sm h-14 font-medium placeholder:text-gray-300"
+                  className="input w-full pl-12 bg-[#FAF7F6] border-none rounded-2xl h-14 font-medium"
                 />
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-[10px] mt-2 ml-1 font-bold italic">
-                  {errors.password.message}
-                </p>
-              )}
             </div>
 
             {loginError && (
-              <div className="p-4 bg-red-50 rounded-2xl border border-red-100">
-                <p className="text-red-600 text-[11px] font-bold text-center italic">
-                  {loginError}
-                </p>
-              </div>
+              <p className="text-red-600 text-[11px] font-bold text-center italic">
+                {loginError}
+              </p>
             )}
 
             <button
               disabled={isLogging}
-              className="btn w-full bg-[#1A1D1F] hover:bg-[#2A2E31] text-white rounded-2xl h-14 border-none shadow-xl shadow-[#1A1D1F]/10 flex items-center justify-center gap-3 group transition-all active:scale-95 disabled:bg-gray-400"
+              className="btn w-full bg-[#1A1D1F] text-white rounded-2xl h-14 border-none shadow-xl flex items-center justify-center gap-3 active:scale-95 disabled:bg-gray-400"
             >
               {isLogging ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 <>
-                  <span className="font-bold tracking-tight">
-                    Login to Dashboard
-                  </span>
-                  <ArrowRight
-                    size={20}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
+                  {" "}
+                  <span className="font-bold">Login to Dashboard</span>{" "}
+                  <ArrowRight size={20} />{" "}
                 </>
               )}
             </button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-400 font-medium">
-              Don't have an account?{" "}
-              <Link
-                className="text-[#1A1D1F] font-black hover:underline underline-offset-4"
-                to="/signup"
-              >
-                Sign Up
-              </Link>
-            </p>
+          <div className="mt-8 text-center text-sm text-gray-400">
+            Don't have an account?{" "}
+            <Link
+              className="text-[#1A1D1F] font-black hover:underline"
+              to="/signup"
+            >
+              Sign Up
+            </Link>
           </div>
 
           <div className="divider my-10 text-[10px] font-black uppercase tracking-[3px] text-gray-300">
@@ -304,9 +282,9 @@ const Login = () => {
 
           <button
             onClick={handleGoogleLogin}
-            className="btn w-full bg-white hover:bg-[#FAF7F6] border-2 border-[#FAF7F6] text-[#1A1D1F] rounded-2xl h-14 shadow-sm flex items-center justify-center gap-4 transition-all duration-300 active:scale-95"
+            className="btn w-full bg-white border-2 border-[#FAF7F6] text-[#1A1D1F] rounded-2xl h-14 shadow-sm flex items-center justify-center gap-4 active:scale-95"
           >
-            <Chrome size={20} className="text-[#1A1D1F]" />
+            <Chrome size={20} />
             <span className="font-bold">Continue with Google</span>
           </button>
         </div>

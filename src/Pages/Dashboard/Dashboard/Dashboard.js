@@ -135,6 +135,12 @@ const Dashboard = () => {
                   label="Manage Reviews"
                   onClick={() => setIsSidebarOpen(false)}
                 />
+                <NavItem
+                  to="premium-control"
+                  icon={<BarChart3 size={20} />}
+                  label="Premium Control"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
               </>
             ) : (
               <>
@@ -148,6 +154,12 @@ const Dashboard = () => {
                   to="add-reviews"
                   icon={<Users size={20} />}
                   label="Feedback"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="unlock-biodata"
+                  icon={<Users size={20} />}
+                  label="Unlocked Biodata"
                   onClick={() => setIsSidebarOpen(false)}
                 />
               </>

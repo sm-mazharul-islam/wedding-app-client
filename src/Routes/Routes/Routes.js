@@ -28,6 +28,8 @@ import ManageWeddingShop from "../../Pages/Dashboard/Dashboard/DashboardHome/Man
 import ManageReviews from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageReviews/ManageReviews";
 import FindYourMatch from "../../Pages/FindYourMatch/FindYourMatch";
 import FindYourMatchDetail from "../../Pages/FindYourMatch/FindYourMatchDetail";
+import UnlockBiodata from "../../Pages/Dashboard/Dashboard/DashboardHome/UnlockBiodata/UnlockBiodata";
+import AdminPremiumControl from "../../Pages/Dashboard/Dashboard/DashboardHome/AdminPremiumControl/AdminPremiumControl";
 
 const router = createBrowserRouter([
   {
@@ -107,6 +109,10 @@ const router = createBrowserRouter([
         element: <CreateAdmin />,
       },
       {
+        path: "premium-control",
+        element: <AdminPremiumControl />,
+      },
+      {
         path: "all-packages",
         element: <AllPackage />,
       },
@@ -137,6 +143,10 @@ const router = createBrowserRouter([
       {
         path: "manage-review",
         element: <ManageReviews />,
+      },
+      {
+        path: "unlock-biodata",
+        element: <UnlockBiodata />,
       },
     ],
     // element: (

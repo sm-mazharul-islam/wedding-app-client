@@ -23,24 +23,22 @@ const FindYourMatch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // ১. JSON ডাটা ফেচ করা
   useEffect(() => {
-    // আপনার লোকাল বা অনলাইন findYourMatch.json থেকে ডাটা ফেচ
-    fetch("/findYourMatch.json")
+    fetch("http://localhost:5000/biodata")
       .then((res) => res.json())
       .then((data) => {
         setProfiles(data);
         setFilteredProfiles(data);
       })
-      .catch((err) => console.error("Error fetching data:", err));
+      .catch((err) => console.error("Error:", err));
   }, []);
 
-  // ২. ফিল্টারিং লজিক (নাম, লোকেশন, ধর্ম এবং বয়স)
+  // ২. ফিল্টারিং লজিক (নাম, লোকেশন, ধর্ম এবং বয়স)
   useEffect(() => {
     const filtered = profiles.filter((profile) => {
       const matchesSearch =
-        profile.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        profile.address.toLowerCase().includes(searchTerm.toLowerCase());
+        profile.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        profile.address?.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesReligion =
         selectedReligion === "All" || profile.religion === selectedReligion;
@@ -88,7 +86,7 @@ const FindYourMatch = () => {
               <Filter size={20} /> Criteria
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               <div>
                 <label className="text-xs font-black uppercase tracking-widest block mb-3 text-rose-400">
                   Religion
@@ -101,6 +99,7 @@ const FindYourMatch = () => {
                   <option value="All">All Communities</option>
                   <option value="Muslim">Muslim</option>
                   <option value="Christian">Christian</option>
+                  <option value="Hindu">Hindu</option>
                 </select>
               </div>
 
@@ -112,7 +111,7 @@ const FindYourMatch = () => {
                 <input
                   type="range"
                   min="18"
-                  max="50"
+                  max="60"
                   value={maxAge}
                   onChange={(e) => setMaxAge(parseInt(e.target.value))}
                   className="w-full accent-rose-500 cursor-pointer"
@@ -159,29 +158,31 @@ const FindYourMatch = () => {
             </div>
           </div>
 
+          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {currentProfiles.length > 0 ? (
               currentProfiles.map((profile) => (
                 <div
-                  key={profile.id}
+                  key={profile._id}
                   className="group relative bg-white rounded-[3rem] overflow-hidden border border-rose-50 hover:border-rose-200 transition-all duration-500 hover:shadow-2xl"
                 >
-                  {/* Image */}
-                  <div className="relative h-72 overflow-hidden">
+                  {/* --- Image Section (Fixed for Faces) --- */}
+                  <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
                     <img
                       src={profile.image}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110"
                       alt={profile.name}
                     />
-                    <div className="absolute top-5 left-5 bg-white/90 px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                    {/* ID Overlay */}
+                    <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
                       <Star size={14} className="fill-rose-500 text-rose-500" />
                       <span className="text-xs font-black text-rose-600 italic">
-                        #{profile.id}
+                        ID: #{profile._id?.slice(-4)}
                       </span>
                     </div>
                   </div>
 
-                  {/* Profile Details (Using Info from JSON) */}
+                  {/* Profile Details */}
                   <div className="p-8">
                     <div className="flex justify-between items-center mb-1">
                       <h4
@@ -194,27 +195,27 @@ const FindYourMatch = () => {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="text-[10px] font-bold px-2 py-1 bg-stone-100 rounded text-stone-500 uppercase">
+                      <span className="text-[10px] font-bold px-2 py-1 bg-stone-100 rounded text-stone-500 uppercase tracking-tighter">
                         {profile.status}
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-1 bg-rose-50 rounded text-rose-500 uppercase">
-                        {profile.professionalInfo.category}
+                      <span className="text-[10px] font-bold px-2 py-1 bg-rose-50 rounded text-rose-500 uppercase tracking-tighter">
+                        {profile.professionalInfo?.category || "Professional"}
                       </span>
                     </div>
 
                     <p className="text-stone-400 text-xs font-bold mb-6 line-clamp-1 italic">
                       <GraduationCap className="inline mr-1" size={14} />{" "}
-                      {profile.academicStatus.honors}
+                      {profile.academicStatus?.honors || "Graduate"}
                     </p>
 
-                    <div className="flex items-center text-stone-400 text-xs gap-1 font-bold mb-8">
+                    <div className="flex items-center text-stone-400 text-xs gap-1 font-bold mb-8 italic">
                       <MapPin size={14} className="text-rose-300" />{" "}
                       {profile.address}
                     </div>
 
                     <div className="flex gap-3">
                       <Link
-                        to={`/findYourMatch/${profile.id}`}
+                        to={`/findYourMatch/${profile._id}`}
                         className="flex-[4]"
                       >
                         <button
@@ -281,7 +282,6 @@ const FindYourMatch = () => {
   );
 };
 
-// Helper Icon for card
 const GraduationCap = ({ size, className }) => (
   <svg
     width={size}
