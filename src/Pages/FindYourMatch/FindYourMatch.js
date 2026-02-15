@@ -24,6 +24,7 @@ const FindYourMatch = () => {
   const itemsPerPage = 10;
 
   useEffect(() => {
+    // এখানে এপিআই থেকে ডাটা আসার সময় 'premiumCount' সহ আসবে (ব্যাকএন্ড এগ্রিগেশন অনুযায়ী)
     fetch("http://localhost:5000/biodata")
       .then((res) => res.json())
       .then((data) => {
@@ -33,7 +34,7 @@ const FindYourMatch = () => {
       .catch((err) => console.error("Error:", err));
   }, []);
 
-  // ২. ফিল্টারিং লজিক (নাম, লোকেশন, ধর্ম এবং বয়স)
+  // ফিল্টারিং লজিক
   useEffect(() => {
     const filtered = profiles.filter((profile) => {
       const matchesSearch =
@@ -52,7 +53,6 @@ const FindYourMatch = () => {
     setCurrentPage(1);
   }, [searchTerm, selectedReligion, maxAge, profiles]);
 
-  // ৩. প্যাজিনেশন ক্যালকুলেশন
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProfiles = filteredProfiles.slice(
@@ -66,23 +66,16 @@ const FindYourMatch = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const romanticBg = "#FFF5F5";
-  const heartRed = "#E53E3E";
   const charcoal = "#2D3748";
+  const heartRed = "#E53E3E";
 
   return (
     <div className="min-h-screen bg-white font-sans text-[#1A1D1F]">
       <main className="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-10">
         {/* --- Sidebar Filter --- */}
         <aside className="w-full lg:w-72">
-          <div
-            className="p-8 rounded-[2.5rem] sticky top-24 border border-rose-100 shadow-sm"
-            style={{ backgroundColor: romanticBg }}
-          >
-            <h3
-              className="font-bold text-xl mb-6 flex items-center gap-2"
-              style={{ color: heartRed }}
-            >
+          <div className="p-8 rounded-[2.5rem] sticky top-24 border border-rose-100 shadow-sm bg-[#FFF5F5]">
+            <h3 className="font-bold text-xl mb-6 flex items-center gap-2 text-[#E53E3E]">
               <Filter size={20} /> Criteria
             </h3>
 
@@ -124,8 +117,7 @@ const FindYourMatch = () => {
                   setSelectedReligion("All");
                   setMaxAge(50);
                 }}
-                className="w-full py-3 rounded-xl font-bold text-sm shadow-lg text-white"
-                style={{ backgroundColor: heartRed }}
+                className="w-full py-3 rounded-xl font-bold text-sm shadow-lg text-white bg-[#E53E3E] hover:bg-rose-600 transition-colors"
               >
                 Reset Filters
               </button>
@@ -136,10 +128,7 @@ const FindYourMatch = () => {
         {/* --- Results Section --- */}
         <section className="flex-1 text-left">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
-            <h2
-              className="text-4xl font-black italic tracking-tighter uppercase"
-              style={{ color: charcoal }}
-            >
+            <h2 className="text-4xl font-black italic tracking-tighter uppercase text-[#2D3748]">
               Wedding <span className="text-rose-400">Connections</span>
             </h2>
 
@@ -158,7 +147,6 @@ const FindYourMatch = () => {
             </div>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {currentProfiles.length > 0 ? (
               currentProfiles.map((profile) => (
@@ -166,13 +154,14 @@ const FindYourMatch = () => {
                   key={profile._id}
                   className="group relative bg-white rounded-[3rem] overflow-hidden border border-rose-50 hover:border-rose-200 transition-all duration-500 hover:shadow-2xl"
                 >
-                  {/* --- Image Section (Fixed for Faces) --- */}
+                  {/* --- Image Section --- */}
                   <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
                     <img
                       src={profile.image}
                       className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110"
                       alt={profile.name}
                     />
+
                     {/* ID Overlay */}
                     <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
                       <Star size={14} className="fill-rose-500 text-rose-500" />
@@ -180,15 +169,23 @@ const FindYourMatch = () => {
                         ID: #{profile._id?.slice(-4)}
                       </span>
                     </div>
+
+                    {/* NEW: Trending Badge for popular profiles (if count >= 5) */}
+                    {profile.premiumCount >= 5 && (
+                      <div className="absolute top-5 right-5 bg-stone-900/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest flex items-center gap-1 shadow-xl border border-white/10">
+                        <Sparkles
+                          size={10}
+                          className="text-yellow-400 animate-pulse"
+                        />{" "}
+                        Hot
+                      </div>
+                    )}
                   </div>
 
                   {/* Profile Details */}
                   <div className="p-8">
                     <div className="flex justify-between items-center mb-1">
-                      <h4
-                        className="font-black text-2xl tracking-tighter uppercase italic"
-                        style={{ color: charcoal }}
-                      >
+                      <h4 className="font-black text-2xl tracking-tighter uppercase italic text-[#2D3748]">
                         {profile.name}, {profile.age}
                       </h4>
                       <Users size={16} className="text-rose-500" />
@@ -218,19 +215,39 @@ const FindYourMatch = () => {
                         to={`/findYourMatch/${profile._id}`}
                         className="flex-[4]"
                       >
-                        <button
-                          className="w-full text-white py-4 rounded-2xl font-bold text-sm shadow-xl transition-all active:scale-95 uppercase tracking-widest"
-                          style={{ backgroundColor: heartRed }}
-                        >
+                        <button className="w-full text-white py-4 rounded-2xl font-bold text-sm shadow-xl transition-all active:scale-95 uppercase tracking-widest bg-[#E53E3E] hover:bg-rose-600">
                           View Bio-Data
                         </button>
                       </Link>
-                      <button className="flex-1 flex items-center justify-center border-2 rounded-2xl border-rose-100 hover:bg-rose-50 transition-all">
-                        <Heart
-                          size={20}
-                          className="text-rose-200 hover:text-rose-500 transition-colors"
-                        />
-                      </button>
+
+                      {/* --- MODIFIED: Heart Button with Counter --- */}
+                      <div className="flex-1 relative group/heart">
+                        {/* Counter Badge */}
+                        {profile.premiumCount > 0 && (
+                          <div className="absolute -top-3 -right-2 bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-lg z-10 animate-bounce">
+                            {profile.premiumCount}
+                          </div>
+                        )}
+
+                        <button className="w-full h-full flex items-center justify-center border-2 rounded-2xl border-rose-100 hover:bg-rose-50 transition-all group-hover/heart:border-rose-300 shadow-sm">
+                          <Heart
+                            size={20}
+                            className={`transition-all duration-300 ${
+                              profile.premiumCount > 0
+                                ? "text-rose-500 fill-rose-500"
+                                : "text-rose-200"
+                            } group-hover/heart:scale-110`}
+                          />
+                        </button>
+
+                        {/* Hover Tooltip */}
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 opacity-0 group-hover/heart:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                          <div className="bg-stone-900 text-white text-[8px] font-black px-3 py-1.5 rounded-lg whitespace-nowrap uppercase tracking-widest shadow-2xl">
+                            {profile.premiumCount || 0} People Unlocked
+                          </div>
+                          <div className="w-2 h-2 bg-stone-900 rotate-45 mx-auto -mt-1"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -248,13 +265,13 @@ const FindYourMatch = () => {
             )}
           </div>
 
-          {/* --- Pagination Controls --- */}
+          {/* Pagination Controls */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-3 mt-16 pb-10">
               <button
                 disabled={currentPage === 1}
                 onClick={() => paginate(currentPage - 1)}
-                className="p-3 rounded-xl border border-rose-100 hover:bg-rose-500 hover:text-white transition-all disabled:opacity-30"
+                className="p-3 rounded-xl border border-rose-100 hover:bg-[#E53E3E] hover:text-white transition-all disabled:opacity-30"
               >
                 <ChevronLeft size={20} />
               </button>
@@ -262,7 +279,7 @@ const FindYourMatch = () => {
                 <button
                   key={index}
                   onClick={() => paginate(index + 1)}
-                  className={`w-12 h-12 rounded-xl font-bold border transition-all ${currentPage === index + 1 ? "bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-200" : "bg-white text-rose-300 border-rose-50 hover:border-rose-200"}`}
+                  className={`w-12 h-12 rounded-xl font-bold border transition-all ${currentPage === index + 1 ? "bg-[#E53E3E] text-white border-[#E53E3E] shadow-lg shadow-rose-200" : "bg-white text-rose-300 border-rose-50 hover:border-rose-200"}`}
                 >
                   {index + 1}
                 </button>
@@ -270,7 +287,7 @@ const FindYourMatch = () => {
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => paginate(currentPage + 1)}
-                className="p-3 rounded-xl border border-rose-100 hover:bg-rose-500 hover:text-white transition-all disabled:opacity-30"
+                className="p-3 rounded-xl border border-rose-100 hover:bg-[#E53E3E] hover:text-white transition-all disabled:opacity-30"
               >
                 <ChevronRight size={20} />
               </button>

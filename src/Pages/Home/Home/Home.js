@@ -19,8 +19,8 @@ const Home = () => {
       <Statement />
       <AmazingWork />
       <EditorialOverlap />
-      <Reviews />
       <ServicesPage />
+      <Reviews />
 
       <InfoCards />
     </div>

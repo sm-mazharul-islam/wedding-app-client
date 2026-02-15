@@ -43,48 +43,35 @@ const demoData = [
     location: "Loire Valley",
     img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000",
   },
+
   {
     id: 7,
-    title: "Candid Moments",
-    category: "Ceremony",
-    location: "New York",
-    img: "https://images.unsplash.com/photo-1510076857177-74700760be15?auto=format&fit=crop&w=1000",
-  },
-  {
-    id: 8,
-    title: "Lace Details",
-    category: "Bridal",
-    location: "Madrid",
-    img: "https://images.unsplash.com/photo-1549416878-b9ca35c2d47b?auto=format&fit=crop&w=1000",
-  },
-  {
-    id: 9,
     title: "Midnight Banquet",
     category: "Venues",
     location: "Rome",
     img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1000",
   },
   {
-    id: 10,
+    id: 8,
     title: "Wildflower Arch",
     category: "Decor",
     location: "Cotswolds",
     img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000",
   },
   {
-    id: 11,
+    id: 9,
     title: "The First Dance",
     category: "Ceremony",
     location: "Venice",
     img: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1000",
   },
-  {
-    id: 12,
-    title: "Classic Bouquet",
-    category: "Decor",
-    location: "Vienna",
-    img: "https://images.unsplash.com/photo-1465495910483-0d7589997930?auto=format&fit=crop&w=1000",
-  },
+  // {
+  //   id: 12,
+  //   title: "Classic Bouquet",
+  //   category: "Decor",
+  //   location: "Vienna",
+  //   img: "https://images.unsplash.com/photo-1465495910483-0d7589997930?auto=format&fit=crop&w=1000",
+  // },
 ];
 
 const categories = ["All", "Venues", "Decor", "Ceremony", "Bridal"];
@@ -99,89 +86,120 @@ const Gallery = () => {
   }, [activeFilter]);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF9] text-[#4A3728] selection:bg-[#743C1D] selection:text-white">
-      {/* Top Border Accent */}
-      <div className="h-1.5 w-full bg-[#743C1D]" />
+    <div className="bg-[#FAF9F6] min-h-screen pb-20 overflow-x-hidden">
+      {/* 1. Global Performance Styles */}
+      <style>{`
+        @keyframes revealUp {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal-item { animation: revealUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+        .masonry-view { columns: 1; gap: 1.5rem; }
+        @media (min-width: 768px) { .masonry-view { columns: 2; gap: 2rem; } }
+        @media (min-width: 1024px) { .masonry-view { columns: 3; gap: 2.5rem; } }
+      `}</style>
 
-      <main className="p-[10%] pt-20">
-        {/* Minimal Header */}
-        <header className="mb-24 text-center">
-          <h1 className="text-6xl md:text-8xl font-serif italic font-light tracking-tighter mb-12">
-            Visual{" "}
-            <span className="font-sans font-bold not-italic text-slate-800">
-              Stories
+      <section className="max-w-[1440px] mx-auto px-5 sm:px-10 py-16">
+        {/* --- LUXURY HERO HEADER --- */}
+        <header className="mb-20 text-center">
+          <div className="mb-6 overflow-hidden">
+            <span className="block text-[9px] tracking-[0.7em] uppercase text-stone-400 font-black reveal-item">
+              Curated Legacy
+            </span>
+          </div>
+
+          <h1 className="text-5xl sm:text-7xl md:text-[8rem] font-serif italic tracking-tighter text-stone-900 leading-none mb-10">
+            Timeless <br className="sm:hidden" />
+            <span className="font-sans not-italic font-black text-rose-500 opacity-90">
+              Artistry
             </span>
           </h1>
 
-          <nav className="flex flex-wrap justify-center gap-x-12 gap-y-4">
+          {/* Responsive Category Nav */}
+          <nav className="flex flex-wrap justify-center gap-x-6 sm:gap-x-12 gap-y-4 border-y border-stone-200 py-6 sm:py-8">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
-                className={`text-[10px] tracking-[0.4em] uppercase transition-all relative pb-2 ${
+                className={`text-[10px] sm:text-[11px] font-black tracking-[0.3em] uppercase transition-all duration-500 relative pb-1 ${
                   activeFilter === cat
-                    ? "text-[#743C1D] font-bold"
-                    : "text-slate-400 hover:text-[#743C1D]"
+                    ? "text-stone-900"
+                    : "text-stone-300 hover:text-stone-600"
                 }`}
               >
                 {cat}
-                {activeFilter === cat && (
-                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-[#743C1D]" />
-                )}
+                <span
+                  className={`absolute bottom-0 left-0 h-[2px] bg-rose-500 transition-all duration-500 ${activeFilter === cat ? "w-full" : "w-0"}`}
+                />
               </button>
             ))}
           </nav>
         </header>
 
-        {/* Pure Masonry Grid */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-10 space-y-10">
-          {filteredItems.map((item) => (
+        {/* --- THE GALLERY GRID --- */}
+        <div className="masonry-view space-y-6 sm:space-y-10">
+          {filteredItems.map((item, index) => (
             <div
               key={item.id}
-              className="break-inside-avoid group relative cursor-pointer overflow-hidden animate-in fade-in duration-1000"
+              className="reveal-item break-inside-avoid group relative cursor-pointer overflow-hidden rounded-[2.5rem] sm:rounded-[3.5rem] bg-white transition-all duration-700 hover:shadow-2xl"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Image Layer */}
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-auto object-cover transition-transform duration-[2s] ease-out group-hover:scale-110"
-              />
+              {/* Image with Dynamic Grayscale and Zoom */}
+              <div className="overflow-hidden">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-auto object-cover transition-transform duration-[2s] ease-out group-hover:scale-110 grayscale-[20%] group-hover:grayscale-0"
+                />
+              </div>
 
-              {/* Sophisticated Hover Overlay (Contains ALL text) */}
-              <div className="absolute inset-0 bg-[#4A3728]/80 opacity-0 group-hover:opacity-100 transition-all duration-700 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6">
-                <p className="text-white/60 text-[9px] uppercase tracking-[0.4em] mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+              {/* Sophisticated Glass Overlay (Adjusted for Small/Large Screen) */}
+              <div className="absolute inset-0 bg-stone-900/60 sm:bg-stone-900/80 opacity-0 group-hover:opacity-100 transition-all duration-700 backdrop-blur-[4px] flex flex-col items-center justify-center p-6 sm:p-12 text-center">
+                <span className="text-rose-400 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.5em] mb-3 sm:mb-4 translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
                   {item.category}
-                </p>
+                </span>
 
-                <h3 className="text-white text-3xl font-serif italic mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                <h3 className="text-white text-2xl sm:text-4xl font-serif italic mb-2 translate-y-6 group-hover:translate-y-0 transition-transform duration-500 delay-100">
                   {item.title}
                 </h3>
 
-                <div className="w-8 h-[1px] bg-white/30 my-4 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 delay-150" />
+                <div className="w-8 sm:w-12 h-[1px] bg-white/30 my-4 sm:my-6 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 delay-150" />
 
-                <p className="text-white/80 text-[10px] uppercase tracking-[0.2em] translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">
+                <div className="flex items-center gap-2 text-white/60 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] translate-y-6 group-hover:translate-y-0 transition-transform duration-500 delay-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                   {item.location}
-                </p>
-
-                {/* Decorative View indicator */}
-                <div className="mt-8 border border-white/20 px-6 py-2 text-[8px] uppercase tracking-[0.4em] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
-                  View Project
                 </div>
+
+                {/* Mobile Friendly Action */}
+                <div className="mt-8 sm:mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
+                  <button className="px-6 py-2.5 sm:px-8 sm:py-3 bg-white text-stone-900 rounded-full font-black uppercase text-[7px] sm:text-[8px] tracking-[0.4em] active:scale-90 transition-all">
+                    View Story
+                  </button>
+                </div>
+              </div>
+
+              {/* Minimal ID Display (Mobile visible initially, then hides) */}
+              <div className="absolute top-6 right-8 text-[40px] sm:text-[60px] font-serif italic text-stone-100/30 group-hover:opacity-0 transition-opacity duration-500 select-none">
+                {String(item.id).padStart(2, "0")}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Footer */}
-        <footer className="mt-40 pt-20 border-t border-slate-100 text-center">
-          <div className="text-[#743C1D] font-serif italic text-2xl tracking-tighter uppercase mb-4">
-            WP
+        {/* --- MODERN MINIMAL FOOTER --- */}
+        <div className="mt-40 text-center">
+          <div className="inline-flex items-center gap-4 mb-8">
+            <div className="h-[1px] w-12 bg-stone-200" />
+            <span className="text-rose-500 font-serif italic text-xl">
+              Love Lives Here
+            </span>
+            <div className="h-[1px] w-12 bg-stone-200" />
           </div>
-          <p className="text-slate-400 text-[9px] uppercase tracking-[0.5em]">
-            Curating Love Stories Worldwide
+          <p className="text-stone-400 text-[10px] font-black uppercase tracking-[0.4em] hover:text-rose-500 transition-colors cursor-pointer">
+            Explore More Stories
           </p>
-        </footer>
-      </main>
+        </div>
+      </section>
     </div>
   );
 };

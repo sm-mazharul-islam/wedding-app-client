@@ -20,6 +20,9 @@ import {
   Activity,
   PlusCircle,
   MessageSquare,
+  UserPlus,
+  CalendarCheck,
+  ClipboardList,
 } from "lucide-react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import CaroselLogo from "../DesignCom/CaroselLogo/CaroselLogo";
@@ -106,6 +109,12 @@ const Dashboard = () => {
                   onClick={() => setIsSidebarOpen(false)}
                 />
                 <NavItem
+                  to="all-booking"
+                  icon={<ClipboardList size={20} />}
+                  label="All Booking"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
                   to="manage-user"
                   icon={<Users size={20} />}
                   label="User Access"
@@ -141,6 +150,18 @@ const Dashboard = () => {
                   label="Premium Control"
                   onClick={() => setIsSidebarOpen(false)}
                 />
+                <NavItem
+                  to="create-biodatas"
+                  icon={<UserPlus size={20} />}
+                  label="Create Biodata"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="manage-biodatas"
+                  icon={<Users size={20} />}
+                  label="Manage Biodatas"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
               </>
             ) : (
               <>
@@ -148,6 +169,12 @@ const Dashboard = () => {
                   to="add-cart"
                   icon={<Package size={20} />}
                   label="My Orders"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <NavItem
+                  to="my-booking"
+                  icon={<CalendarCheck size={20} />}
+                  label="My Bookings"
                   onClick={() => setIsSidebarOpen(false)}
                 />
                 <NavItem

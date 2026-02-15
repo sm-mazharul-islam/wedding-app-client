@@ -1,14 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../../Layout/Main";
 import About from "../../Pages/About/About/About";
-import Appointment from "../../Pages/Appointment/Appointment/Appointment";
 import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import SingleServices from "../../Pages/Home/Services/SingleServices";
 import WeddingShop from "../../Pages/WeddingShop/WeddingShop/WeddingShop";
-import WeddingShopSingleItem from "../../Pages/WeddingShop/WeddingShopSingleItem/WeddingShopSingleItem";
 import WeddingShopHome from "../../Pages/WeddingShop/WeddingShopSingleItem/WeddingShopHome";
 import NotFound from "../../Pages/About/NotFound/NotFound";
 import AllOrderProduct from "../../Pages/Dashboard/Dashboard/DashboardHome/AllOrderProduct";
@@ -30,6 +28,10 @@ import FindYourMatch from "../../Pages/FindYourMatch/FindYourMatch";
 import FindYourMatchDetail from "../../Pages/FindYourMatch/FindYourMatchDetail";
 import UnlockBiodata from "../../Pages/Dashboard/Dashboard/DashboardHome/UnlockBiodata/UnlockBiodata";
 import AdminPremiumControl from "../../Pages/Dashboard/Dashboard/DashboardHome/AdminPremiumControl/AdminPremiumControl";
+import ManageBiodatas from "../../Pages/Dashboard/Dashboard/DashboardHome/ManageBiodatas/ManageBiodatas";
+import AdminCreateBiodata from "../../Pages/Dashboard/Dashboard/DashboardHome/AdminCreateBiodata/AdminCreateBiodata";
+import MyBooking from "../../Pages/Dashboard/Dashboard/DashboardHome/MyBooking/MyBooking";
+import AllBooking from "../../Pages/Dashboard/Dashboard/DashboardHome/AllBooking/AllBooking";
 
 const router = createBrowserRouter([
   {
@@ -113,12 +115,24 @@ const router = createBrowserRouter([
         element: <AdminPremiumControl />,
       },
       {
+        path: "manage-review",
+        element: <ManageReviews />,
+      },
+      {
         path: "all-packages",
         element: <AllPackage />,
       },
       {
         path: "add-package",
         element: <AddPackage />,
+      },
+      {
+        path: "manage-biodatas",
+        element: <ManageBiodatas />,
+      },
+      {
+        path: "create-biodatas",
+        element: <AdminCreateBiodata />,
       },
       {
         path: "add-reviews",
@@ -141,8 +155,12 @@ const router = createBrowserRouter([
         element: <ManageWeddingShop />,
       },
       {
-        path: "manage-review",
-        element: <ManageReviews />,
+        path: "my-booking",
+        element: <MyBooking />,
+      },
+      {
+        path: "all-booking",
+        element: <AllBooking />,
       },
       {
         path: "unlock-biodata",
