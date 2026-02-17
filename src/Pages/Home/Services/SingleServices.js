@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../contexts/AuthProvider";
+import BASE_URL from "../../../config";
 
 const SingleServices = () => {
   const { _id } = useParams();
@@ -12,7 +13,7 @@ const SingleServices = () => {
   const { data: service = {}, isLoading } = useQuery({
     queryKey: ["singleService", _id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/servicesPackage/${_id}`);
+      const res = await fetch(`${BASE_URL}/servicesPackage/${_id}`);
       if (!res.ok) throw new Error("Service not found");
       return res.json();
     },
@@ -110,7 +111,7 @@ const SingleServices = () => {
       };
 
       try {
-        const res = await fetch("http://localhost:5000/bookings", {
+        const res = await fetch(`${BASE_URL}/bookings`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(bookingData),

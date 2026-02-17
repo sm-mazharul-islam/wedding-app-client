@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import WeddingShopSingleItemCard from "./WeddingShopSingleItemCard";
 import { useParams } from "react-router-dom";
+import BASE_URL from "../../../config";
 
 const WeddingShopSingleItem = ({ detail, setDetail }) => {
   const { id } = useParams();
@@ -9,7 +10,7 @@ const WeddingShopSingleItem = ({ detail, setDetail }) => {
   useEffect(() => {
     if (id) {
       // Fetching the specific wedding product details by ID
-      fetch(`http://localhost:5000/weddingShop/${id}`)
+      fetch(`${BASE_URL}/weddingShop/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setDetail(data);

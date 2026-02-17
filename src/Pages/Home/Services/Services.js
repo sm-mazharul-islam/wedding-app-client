@@ -3,6 +3,7 @@ import sectionImage2 from "../../../Images/section-title2.png";
 import Service from "./Service";
 import service1 from "../../../Images/service01.jpg";
 import { useQuery } from "@tanstack/react-query";
+import BASE_URL from "../../../config";
 
 const Services = ({ limit, isFullView }) => {
   // 1. Fetching data from the backend
@@ -13,7 +14,7 @@ const Services = ({ limit, isFullView }) => {
   } = useQuery({
     queryKey: ["servicesPackage"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/servicesPackage");
+      const res = await fetch(`${BASE_URL}servicesPackage`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

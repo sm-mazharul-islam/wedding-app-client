@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Mail, Lock, ArrowRight, Chrome, Loader2 } from "lucide-react";
 import { AuthContext } from "../../contexts/AuthProvider";
+import BASE_URL from "../../config";
 
 const Login = () => {
   const {
@@ -31,7 +32,7 @@ const Login = () => {
       role: "user",
     };
 
-    fetch("http://localhost:5000/users", {
+    fetch(`${BASE_URL}/users`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(currentUser),

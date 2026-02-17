@@ -9,6 +9,7 @@ import {
   User as UserIcon,
   ShieldCheck,
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const ManageUser = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ const ManageUser = () => {
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/users");
+      const res = await fetch(`${BASE_URL}/users`);
       if (!res.ok) throw new Error("Failed to fetch users");
       return res.json();
     },
@@ -25,7 +26,7 @@ const ManageUser = () => {
 
   //  (Admin/User)
   const handleRoleChange = (id, name, role) => {
-    fetch(`http://localhost:5000/users/role/${id}`, {
+    fetch(`${BASE_URL}/users/role/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ role }),
@@ -64,7 +65,7 @@ const ManageUser = () => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/users/${id}`, { method: "DELETE" })
+        fetch(`${BASE_URL}/users/${id}`, { method: "DELETE" })
           .then((res) => res.json())
           .then((data) => {
             if (data.deletedCount > 0) {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Trash2, Loader2, PackageSearch, Search, X } from "lucide-react";
 import Swal from "sweetalert2";
+import BASE_URL from "../../../../../config";
 
 const AllPackage = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -15,7 +16,7 @@ const AllPackage = () => {
   } = useQuery({
     queryKey: ["servicesPackage"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/servicesPackage");
+      const res = await fetch(`${BASE_URL}/servicesPackage`);
       if (!res.ok) throw new Error("Failed to fetch packages");
       return res.json();
     },
@@ -49,7 +50,7 @@ const AllPackage = () => {
 
       .then((result) => {
         if (result.isConfirmed) {
-          fetch(`http://localhost:5000/servicesPackage/${id}`, {
+          fetch(`${BASE_URL}/servicesPackage/${id}`, {
             method: "DELETE",
           })
             .then((res) => res.json())
@@ -87,7 +88,7 @@ const AllPackage = () => {
         : form.image.value,
     };
 
-    fetch(`http://localhost:5000/servicesPackage/${selectedPackage._id}`, {
+    fetch(`${BASE_URL}/servicesPackage/${selectedPackage._id}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(updatedData),

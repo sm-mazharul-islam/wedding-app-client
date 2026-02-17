@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { PackagePlus, ImageIcon, DollarSign, star } from "lucide-react";
+import BASE_URL from "../../../../config";
 
 const AddProducts = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -24,7 +25,7 @@ const AddProducts = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/weddingShop", {
+      const response = await fetch(`${BASE_URL}/weddingShop`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(productData),

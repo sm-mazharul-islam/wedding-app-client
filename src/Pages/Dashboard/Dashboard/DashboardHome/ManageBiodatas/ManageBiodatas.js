@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Edit3, Trash2, Search, MapPin, X, Info, Calendar } from "lucide-react";
 import { useForm } from "react-hook-form";
+import BASE_URL from "../../../../../config";
 
 const ManageBiodatas = () => {
   const queryClient = useQueryClient();
@@ -12,13 +13,12 @@ const ManageBiodatas = () => {
 
   const { data: biodatas = [], isLoading } = useQuery({
     queryKey: ["all-biodatas"],
-    queryFn: () =>
-      fetch("http://localhost:5000/biodata").then((res) => res.json()),
+    queryFn: () => fetch(`${BASE_URL}/biodata`).then((res) => res.json()),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id) =>
-      fetch(`http://localhost:5000/biodata/${id}`, { method: "DELETE" }),
+      fetch(`${BASE_URL}/biodata/${id}`, { method: "DELETE" }),
     onSuccess: () => {
       queryClient.invalidateQueries(["all-biodatas"]);
       Swal.fire({
@@ -57,7 +57,7 @@ const ManageBiodatas = () => {
 
   const updateMutation = useMutation({
     mutationFn: (updatedData) =>
-      fetch(`http://localhost:5000/biodata/${editingProfile._id}`, {
+      fetch(`${BASE_URL}/biodata/${editingProfile._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),

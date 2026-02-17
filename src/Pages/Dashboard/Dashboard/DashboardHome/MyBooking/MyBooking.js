@@ -9,6 +9,7 @@ import {
   AlertCircle,
   CheckCircle2,
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const MyBooking = () => {
   const { user } = useContext(AuthContext);
@@ -16,9 +17,7 @@ const MyBooking = () => {
   const { data: myBookings = [], isLoading } = useQuery({
     queryKey: ["my-bookings", user?.email],
     queryFn: async () => {
-      const res = await fetch(
-        `http://localhost:5000/my-bookings/${user?.email}`,
-      );
+      const res = await fetch(`${BASE_URL}/my-bookings/${user?.email}`);
       return res.json();
     },
     enabled: !!user?.email,

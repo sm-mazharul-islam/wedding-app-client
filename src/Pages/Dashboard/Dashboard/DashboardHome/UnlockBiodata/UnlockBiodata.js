@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   ArrowUpRight,
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const UnlockBiodata = () => {
   const currentUserEmail = localStorage.getItem("userEmail");
@@ -20,7 +21,7 @@ const UnlockBiodata = () => {
     queryKey: ["my-unlocked-data", currentUserEmail],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/unlocked-requests/${currentUserEmail?.toLowerCase()}`,
+        `${BASE_URL}/unlocked-requests/${currentUserEmail?.toLowerCase()}`,
       );
       if (!res.ok) throw new Error("Network response was not ok");
       return res.json();

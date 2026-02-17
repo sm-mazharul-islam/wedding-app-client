@@ -14,6 +14,7 @@ import {
   UserCheck,
   Zap,
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const AdminPremiumControl = () => {
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ const AdminPremiumControl = () => {
   const { data: allRequests = [], isLoading } = useQuery({
     queryKey: ["all-premium-requests"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/all-unlocked-requests");
+      const res = await fetch(`${BASE_URL}/all-unlocked-requests`);
       return res.json();
     },
     refetchInterval: 5000,
@@ -30,7 +31,7 @@ const AdminPremiumControl = () => {
 
   const mutation = useMutation({
     mutationFn: async (id) => {
-      const res = await fetch(`http://localhost:5000/unlock-premium/${id}`, {
+      const res = await fetch(`${BASE_URL}/unlock-premium/${id}`, {
         method: "DELETE",
       });
       return res.json();

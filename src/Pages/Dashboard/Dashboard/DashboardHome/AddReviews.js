@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../contexts/AuthProvider";
+import BASE_URL from "../../../../config";
 
 const AddReviews = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -19,7 +20,7 @@ const AddReviews = () => {
       date: new Date().toISOString(),
     };
 
-    fetch("http://localhost:5000/reviews", {
+    fetch(`${BASE_URL}/reviews`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

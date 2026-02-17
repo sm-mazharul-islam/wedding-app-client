@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 // jsPDF and AutoTable imports
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import BASE_URL from "../../../../../config";
 
 const ManageReviews = () => {
   const [filterRating, setFilterRating] = useState("all");
@@ -36,7 +37,7 @@ const ManageReviews = () => {
   } = useQuery({
     queryKey: ["all-reviews"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/reviews");
+      const res = await fetch(`${BASE_URL}/reviews`);
       if (!res.ok) throw new Error("Failed to load reviews");
       return res.json();
     },
@@ -47,7 +48,7 @@ const ManageReviews = () => {
   const handlePinReview = (id, currentStatus) => {
     const newStatus = !currentStatus;
 
-    fetch(`http://localhost:5000/reviews/pin/${id}`, {
+    fetch(`${BASE_URL}/reviews/pin/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ isPinned: newStatus }),
@@ -191,7 +192,7 @@ const ManageReviews = () => {
 
       .then((result) => {
         if (result.isConfirmed) {
-          fetch(`http://localhost:5000/reviews/${id}`, { method: "DELETE" })
+          fetch(`${BASE_URL}/reviews/${id}`, { method: "DELETE" })
             .then((res) => res.json())
             .then((data) => {
               if (data.deletedCount > 0) {

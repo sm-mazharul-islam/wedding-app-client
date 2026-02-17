@@ -9,6 +9,7 @@ import {
   Users,
   Heart,
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const AdminCreateBiodata = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -46,7 +47,7 @@ const AdminCreateBiodata = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/biodata", {
+      const res = await fetch(`${BASE_URL}/biodata`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),

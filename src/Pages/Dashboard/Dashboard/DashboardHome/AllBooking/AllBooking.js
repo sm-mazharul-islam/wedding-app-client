@@ -11,6 +11,7 @@ import {
   Trash2,
   Mail, // মেইল আইকনটি যোগ করা হয়েছে
 } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const AllBooking = () => {
   const queryClient = useQueryClient();
@@ -19,9 +20,7 @@ const AllBooking = () => {
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["all-bookings"],
     queryFn: () =>
-      fetch("http://localhost:5000/admin/all-bookings").then((res) =>
-        res.json(),
-      ),
+      fetch(`${BASE_URL}/admin/all-bookings`).then((res) => res.json()),
   });
 
   const sortedBookings = [...bookings].sort(
@@ -35,7 +34,7 @@ const AllBooking = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id) =>
-      fetch(`http://localhost:5000/bookings/${id}`, { method: "DELETE" }),
+      fetch(`${BASE_URL}/bookings/${id}`, { method: "DELETE" }),
     onSuccess: () => {
       queryClient.invalidateQueries(["all-bookings"]);
       Swal.fire({
@@ -51,7 +50,7 @@ const AllBooking = () => {
 
   const statusMutation = useMutation({
     mutationFn: ({ id, status }) =>
-      fetch(`http://localhost:5000/bookings/${id}`, {
+      fetch(`${BASE_URL}/bookings/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),

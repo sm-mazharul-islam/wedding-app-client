@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Package, Star, ShoppingCart, TrendingUp, Loader2 } from "lucide-react";
 import { AuthContext } from "../../../../contexts/AuthProvider";
+import BASE_URL from "../../../../config";
 
 const DashboardHome = () => {
   const { user } = useContext(AuthContext);
@@ -15,9 +16,7 @@ const DashboardHome = () => {
   } = useQuery({
     queryKey: ["dashboard-stats", user?.email],
     queryFn: async () => {
-      const res = await fetch(
-        `http://localhost:5000/dashboard-stats/${user?.email}`,
-      );
+      const res = await fetch(`${BASE_URL}/${user?.email}`);
       return res.json();
     },
     refetchInterval: 15000, // নিয়মিত ১৫ সেকেন্ড পর পর ব্যাকগ্রাউন্ডে চেক করবে

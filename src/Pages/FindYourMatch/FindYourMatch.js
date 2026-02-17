@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import BASE_URL from "../../config";
 
 const FindYourMatch = () => {
   const [profiles, setProfiles] = useState([]);
@@ -25,7 +26,7 @@ const FindYourMatch = () => {
 
   useEffect(() => {
     // এখানে এপিআই থেকে ডাটা আসার সময় 'premiumCount' সহ আসবে (ব্যাকএন্ড এগ্রিগেশন অনুযায়ী)
-    fetch("http://localhost:5000/biodata")
+    fetch(`${BASE_URL}/biodata`)
       .then((res) => res.json())
       .then((data) => {
         setProfiles(data);

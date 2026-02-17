@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 
 import "./Review.css";
+import BASE_URL from "../../../config";
 
 const Reviews = () => {
   // 1. Initialize state for reviews
@@ -17,7 +18,7 @@ const Reviews = () => {
 
   // 2. Fetch data from the backend
   useEffect(() => {
-    fetch("http://localhost:5000/reviews")
+    fetch(`${BASE_URL}/reviews`)
       .then((res) => res.json())
       .then((data) => {
         // --- ফাংশনালিটি পরিবর্তন: শুধুমাত্র পিন করা রিভিউ ফিল্টার করা হচ্ছে ---

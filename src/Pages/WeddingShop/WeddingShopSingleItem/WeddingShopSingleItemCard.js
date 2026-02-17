@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import BASE_URL from "../../../config";
 
 const WeddingShopSingleItemCard = ({ detail }) => {
   const {
@@ -23,9 +24,7 @@ const WeddingShopSingleItemCard = ({ detail }) => {
   } = useQuery({
     queryKey: ["servicesPackage", productId],
     queryFn: async () => {
-      const res = await fetch(
-        `http://localhost:5000/servicesPackage/${productId}`,
-      );
+      const res = await fetch(`${BASE_URL}/servicesPackage/${productId}`);
       if (!res.ok) throw new Error("Failed to fetch live stock");
       return res.json();
     },
@@ -122,7 +121,7 @@ const WeddingShopSingleItemCard = ({ detail }) => {
     };
 
     // ২. ডাটাবেজে পাঠানো
-    fetch("http://localhost:5000/orders", {
+    fetch(`${BASE_URL}/orders`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(orderData),

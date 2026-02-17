@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import BASE_URL from "../../../../../config";
 
 const AddPackage = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -18,7 +19,7 @@ const AddPackage = () => {
       headerImage: data.headerImage || "https://i.ibb.co/FxryvZx/default.jpg",
     };
 
-    fetch("http://localhost:5000/servicesPackage", {
+    fetch(`${BASE_URL}/servicesPackage`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

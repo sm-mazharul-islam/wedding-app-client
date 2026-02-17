@@ -7,6 +7,7 @@ import autoTable from "jspdf-autotable";
 import sealImg from "../../../../../Images/sealwp.png";
 import signImg from "../../../../../Images/signwp.png";
 import { Trash2, ReceiptText, ShoppingCart } from "lucide-react";
+import BASE_URL from "../../../../../config";
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -141,7 +142,7 @@ const ViewCart = () => {
       // ১. স্টক আপডেট
       const updatePromises = cartItems.map((item) => {
         const targetId = item.productId || item._id || item.id;
-        return fetch(`http://localhost:5000/servicesPackage/${targetId}`, {
+        return fetch(`${BASE_URL}/servicesPackage/${targetId}`, {
           method: "PATCH",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ quantity: item.quantity }),
@@ -150,7 +151,7 @@ const ViewCart = () => {
       await Promise.all(updatePromises);
 
       // অর্ডার সেভ
-      await fetch("http://localhost:5000/cart", {
+      await fetch(`${BASE_URL}/cart`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({

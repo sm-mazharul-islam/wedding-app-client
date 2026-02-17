@@ -18,6 +18,7 @@ import {
   Star,
   LogIn,
 } from "lucide-react";
+import BASE_URL from "../../config";
 
 const FindYourMatchDetail = () => {
   const { id } = useParams();
@@ -37,14 +38,14 @@ const FindYourMatchDetail = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const personRes = await fetch(`http://localhost:5000/biodata/${id}`);
+        const personRes = await fetch(`${BASE_URL}/biodata/${id}`);
         const personData = await personRes.json();
         setPerson(personData);
 
         const email = getStorageEmail();
         if (isLoggedIn && email) {
           const unlockRes = await fetch(
-            `http://localhost:5000/unlocked-requests/${email.toLowerCase()}`,
+            `${BASE_URL}/unlocked-requests/${email.toLowerCase()}`,
           );
           const unlockedList = await unlockRes.json();
           setIsUnlockedInDb(unlockedList.some((item) => item.biodataId === id));
@@ -81,7 +82,7 @@ const FindYourMatchDetail = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/unlock-premium", {
+      const response = await fetch(`${BASE_URL}/unlock-premium`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

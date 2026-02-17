@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Trash2, Loader2, Store, Search } from "lucide-react";
 import Swal from "sweetalert2";
+import BASE_URL from "../../../../../config";
 
 const ManageWeddingShop = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -15,7 +16,7 @@ const ManageWeddingShop = () => {
   } = useQuery({
     queryKey: ["weddingShop"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/weddingShop");
+      const res = await fetch(`${BASE_URL}/weddingShop`);
       if (!res.ok) throw new Error("Failed to load shop items");
       return res.json();
     },
@@ -59,7 +60,7 @@ const ManageWeddingShop = () => {
 
       .then((result) => {
         if (result.isConfirmed) {
-          fetch(`http://localhost:5000/weddingShop/${id}`, {
+          fetch(`${BASE_URL}/weddingShop/${id}`, {
             method: "DELETE",
           })
             .then((res) => res.json())
@@ -90,7 +91,7 @@ const ManageWeddingShop = () => {
       inStock: parseInt(form.stock.value),
     };
 
-    fetch(`http://localhost:5000/weddingShop/${selectedItem._id}`, {
+    fetch(`${BASE_URL}/weddingShop/${selectedItem._id}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(updatedInfo),

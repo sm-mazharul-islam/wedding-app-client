@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Mail, Lock, User, Loader2, Eye, EyeOff, Camera } from "lucide-react";
 import { AuthContext } from "../../contexts/AuthProvider";
+import BASE_URL from "../../config";
 
 const SignUp = () => {
   const { createUser, updateUser } = useContext(AuthContext);
@@ -64,7 +65,7 @@ const SignUp = () => {
         createdAt: new Date(),
       };
 
-      const dbRes = await fetch("http://localhost:5000/users", {
+      const dbRes = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(newUser),

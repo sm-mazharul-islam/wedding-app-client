@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import BASE_URL from "../../../config";
 
 const WeddingShopItem = ({ item, setItem }) => {
   const [filteredItems, setFilteredItems] = useState([]);
@@ -23,7 +24,7 @@ const WeddingShopItem = ({ item, setItem }) => {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch("http://localhost:5000/weddingShop")
+    fetch(`${BASE_URL}/weddingShop`)
       .then((res) => res.json())
       .then((data) => {
         setItem(data);

@@ -90,6 +90,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import BASE_URL from "../config";
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
@@ -133,7 +134,7 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       // এডমিন বা ডাটাবেজ থেকে ইউজার ডিলিট করা হলে লগ-আউট লজিক
       if (currentUser?.email && !isLoggingIn) {
-        fetch(`http://localhost:5000/users/role/${currentUser.email}`)
+        fetch(`${BASE_URL}/users/role/${currentUser.email}`)
           .then((res) => {
             if (res.status === 404) {
               console.warn("User missing in DB. Forced logout triggered.");
