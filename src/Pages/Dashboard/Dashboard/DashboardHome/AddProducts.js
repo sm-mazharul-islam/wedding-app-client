@@ -7,12 +7,10 @@ const AddProducts = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    // ডাটা টাইপ কনভার্ট করা এবং ইমেজ অ্যারে তৈরি করা
     const productData = {
       name: data.name,
       inStock: parseInt(data.inStock),
       inStockTwo: data.inStockTwo || "Coming Soon",
-      // আপনার দেওয়া ডাটা অনুযায়ী ইমেজগুলোকে অ্যারেতে সাজানো হয়েছে
       image: [
         { id: "img1", url: data.img1 },
         { id: "img2", url: data.img2 || data.img1 },
@@ -47,7 +45,8 @@ const AddProducts = () => {
           title: "Success!",
           text: "Product added to Wedding Shop successfully!",
           icon: "success",
-          confirmButtonColor: "#1A1D1F",
+          showConfirmButton: false,
+          timer: 1500,
         });
         reset(); // ফর্ম ক্লিয়ার করা
       }
@@ -58,7 +57,7 @@ const AddProducts = () => {
   };
 
   return (
-    <div className="p-10 bg-base-100 min-h-screen">
+    <div className=" bg-base-100 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-3 mb-8">
           <PackagePlus className="text-primary" size={30} />
@@ -187,7 +186,8 @@ const AddProducts = () => {
           <div className="md:col-span-2 mt-4">
             <button
               type="submit"
-              className="btn btn-primary w-full btn-lg shadow-xl shadow-primary/20"
+              className="btn border-none btn-lg rounded-[20px] font-black uppercase tracking-widest text-xs text-white shadow-xl hover:brightness-110 active:scale-95 transition-all w-full"
+              style={{ backgroundColor: "#E53E3E" }}
             >
               Publish to Wedding Shop
             </button>

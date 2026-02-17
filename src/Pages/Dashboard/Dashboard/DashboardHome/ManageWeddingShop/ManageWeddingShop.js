@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Edit,
-  Trash2,
-  Loader2,
-  Store,
-  Search,
-  Package,
-  Plus,
-} from "lucide-react";
+import { Edit, Trash2, Loader2, Store, Search } from "lucide-react";
 import Swal from "sweetalert2";
 
 const ManageWeddingShop = () => {
@@ -34,31 +26,58 @@ const ManageWeddingShop = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "This item will be removed permanently!",
+      html: `
+        <style>
+          .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-confirm:hover { background-color: #db2777 !important; }
+          .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
+        </style>
+        This record will be permanently removed from admin logs.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#EF4444",
-      cancelButtonColor: "#6B7280",
-      confirmButtonText: "Yes, delete it!",
-      background: "#ffffff",
-      customClass: {
-        popup: "rounded-[24px]",
-        confirmButton: "rounded-xl px-6 py-3",
-        cancelButton: "rounded-xl px-6 py-3",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:5000/weddingShop/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              Swal.fire("Deleted!", "Item removed.", "success");
-              refetch();
-            }
-          });
-      }
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Keep it",
+      customClass: { popup: "rounded-[40px]" },
     });
+    Swal.fire({
+      title: "Delete History?",
+      html: `
+    <style>
+      .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
+      .swal2-confirm:hover { background-color: #db2777 !important; }
+      .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
+      .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
+    </style>
+    This record will be permanently removed from admin logs.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Keep it",
+      customClass: { popup: "rounded-[40px]" },
+    })
+
+      .then((result) => {
+        if (result.isConfirmed) {
+          fetch(`http://localhost:5000/weddingShop/${id}`, {
+            method: "DELETE",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.deletedCount > 0) {
+                Swal.fire({
+                  title: "Deleted",
+                  text: "item removed",
+                  icon: "success",
+                  timer: 1500,
+                  timerProgressBar: true,
+                  showConfirmButton: false,
+                });
+                refetch();
+              }
+            });
+        }
+      });
   };
 
   // 3. Update Handler

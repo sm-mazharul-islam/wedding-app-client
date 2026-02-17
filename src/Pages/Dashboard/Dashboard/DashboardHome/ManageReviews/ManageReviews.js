@@ -123,7 +123,7 @@ const ManageReviews = () => {
       doc.save(`Official_Planner_Report_${Date.now()}.pdf`);
     } catch (error) {
       console.error("PDF Export Error:", error);
-      Swal.fire("Error", "PDF জেনারেট করা সম্ভব হচ্ছে না।", "error");
+      Swal.fire("Error", "Not Able to PDF Generate", "error");
     }
   };
 
@@ -174,22 +174,42 @@ const ManageReviews = () => {
     Swal.fire({
       title: "Confirm Deletion?",
       text: "This feedback will be removed permanently.",
+      html: `
+        <style>
+          .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-confirm:hover { background-color: #db2777 !important; }
+          .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
+        </style>
+        This record will be permanently removed from admin logs.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#EF4444",
-      confirmButtonText: "Delete",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:5000/reviews/${id}`, { method: "DELETE" })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              Swal.fire("Removed!", "Database updated.", "success");
-              refetch();
-            }
-          });
-      }
-    });
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Keep it",
+      customClass: { popup: "rounded-[40px]" },
+    })
+
+      .then((result) => {
+        if (result.isConfirmed) {
+          fetch(`http://localhost:5000/reviews/${id}`, { method: "DELETE" })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.deletedCount > 0) {
+                Swal.fire({
+                  title: "Removed!",
+                  text: "Database updated.",
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false,
+                  background: "#1A1D1F",
+                  color: "#fff",
+                });
+
+                refetch();
+              }
+            });
+        }
+      });
   };
 
   if (isLoading)

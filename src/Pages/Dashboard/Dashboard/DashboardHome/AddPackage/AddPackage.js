@@ -1,14 +1,3 @@
-// import React from "react";
-
-// const AddPackage = () => {
-//   return (
-//     <div>
-//       <h1>This is add package component</h1>
-//     </div>
-//   );
-// };
-
-// export default AddPackage;
 import React from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -47,7 +36,12 @@ const AddPackage = () => {
       })
       .then((result) => {
         if (result.insertedId) {
-          Swal.fire({ title: "Success!", icon: "success" });
+          Swal.fire({
+            title: "Success!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           reset();
         }
       })
@@ -160,7 +154,8 @@ const AddPackage = () => {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className="btn btn-primary w-full md:w-1/2 text-lg"
+            className="btn border-none btn-lg rounded-[20px] font-black uppercase tracking-widest text-xs text-white shadow-xl hover:brightness-110 active:scale-95 transition-all w-full"
+            style={{ backgroundColor: "#E53E3E" }}
           >
             Save Wedding Package
           </button>

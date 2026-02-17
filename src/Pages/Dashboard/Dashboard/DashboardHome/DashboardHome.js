@@ -27,7 +27,7 @@ const DashboardHome = () => {
   // ২ সেকেন্ডের মধ্যে লেআউট পরিবর্তন করার লিসেনার
   useEffect(() => {
     const handleSync = () => {
-      console.log("Role update signal received. Syncing layout...");
+      // console.log("Role update signal received. Syncing layout...");
       refetch(); // এটি কল হওয়া মাত্র লেআউট বদলে যাবে
     };
     window.addEventListener("roleUpdated", handleSync);

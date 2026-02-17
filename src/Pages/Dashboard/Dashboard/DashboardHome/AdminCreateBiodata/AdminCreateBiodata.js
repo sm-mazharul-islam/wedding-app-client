@@ -14,7 +14,6 @@ const AdminCreateBiodata = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    // ডাটা ফরম্যাট অনুযায়ী অবজেক্ট সাজানো
     const formattedData = {
       ...data,
       age: parseInt(data.age),
@@ -59,6 +58,8 @@ const AdminCreateBiodata = () => {
           title: "Biodata Created!",
           text: "New profile has been added to the registry.",
           customClass: { popup: "rounded-[30px]" },
+          showConfirmButton: false,
+          timer: 1500,
         });
         reset();
       }
@@ -288,7 +289,8 @@ const AdminCreateBiodata = () => {
 
         <button
           type="submit"
-          className="w-full py-6 bg-stone-900 text-white rounded-[30px] font-black uppercase tracking-[0.3em] hover:bg-rose-600 transition-all shadow-2xl active:scale-95"
+          className="btn border-none btn-lg rounded-[20px] font-black uppercase tracking-widest text-xs text-white shadow-xl hover:brightness-110 active:scale-95 transition-all w-full"
+          style={{ backgroundColor: "#E53E3E" }}
         >
           Publish Biodata
         </button>

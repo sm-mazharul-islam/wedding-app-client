@@ -6,13 +6,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import sealImg from "../../../../../Images/sealwp.png";
 import signImg from "../../../../../Images/signwp.png";
-import {
-  Trash2,
-  ShoppingBag,
-  ReceiptText,
-  CreditCard,
-  ShoppingCart,
-} from "lucide-react";
+import { Trash2, ReceiptText, ShoppingCart } from "lucide-react";
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -21,7 +15,7 @@ const ViewCart = () => {
 
   const userCartKey = user ? `cart_${user.uid}` : null;
 
-  // --- PDF রশিদ জেনারেশন লজিক ---
+  // --- PDF ---
   const generatePDF = (items, total) => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -155,7 +149,7 @@ const ViewCart = () => {
       });
       await Promise.all(updatePromises);
 
-      // ২. অর্ডার সেভ
+      // অর্ডার সেভ
       await fetch("http://localhost:5000/cart", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -167,10 +161,10 @@ const ViewCart = () => {
         }),
       });
 
-      // ৩. PDF জেনারেশন
+      //  PDF জেনারেশন
       generatePDF(cartItems, checkoutTotal);
 
-      // ৪. ক্লিনিং
+      //  ক্লিনিং
       localStorage.removeItem(userCartKey);
       setCartItems([]);
       window.dispatchEvent(new Event("cartUpdated"));
@@ -180,7 +174,8 @@ const ViewCart = () => {
         title: "Order Successful!",
         text: "Your official receipt has been downloaded.",
         icon: "success",
-        confirmButtonColor: "#1A1D1F",
+        ShowConfirmButton: false,
+        timer: 1500,
       });
     } catch (err) {
       Swal.fire("Error", "Checkout failed.", "error");

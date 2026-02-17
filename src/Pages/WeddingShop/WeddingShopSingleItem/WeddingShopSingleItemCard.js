@@ -1,9 +1,6 @@
-//!!!!
-
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-hot-toast"; // Recommended for feedback
 import Swal from "sweetalert2";
 
 const WeddingShopSingleItemCard = ({ detail }) => {
@@ -67,11 +64,35 @@ const WeddingShopSingleItemCard = ({ detail }) => {
 
   const handleAddToCart = () => {
     if (!user?.uid) {
-      Swal.fire(
-        "Login Required",
-        "Please login to add items to your cart.",
-        "info",
-      );
+      Swal.fire({
+        title: "Access Denied",
+        text: "Please login with your account to unlock this connection.",
+        icon: "error",
+        confirmButtonText: "Sign In Now",
+        customClass: {
+          popup: "rounded-[30px]",
+        },
+        // Keep the "inside" style fix to ensure button visibility
+        didOpen: () => {
+          const confirmBtn = Swal.getConfirmButton();
+          if (confirmBtn) {
+            confirmBtn.style.backgroundColor = "#FF69B4"; // Pink color
+            confirmBtn.style.color = "#ffffff";
+            confirmBtn.style.padding = "10px 24px";
+            confirmBtn.style.borderRadius = "8px";
+            confirmBtn.style.border = "none";
+          }
+        },
+      }).then((result) => {
+        /* This block runs after the user clicks the button */
+        if (result.isConfirmed) {
+          // Standard JavaScript redirect
+          window.location.href = "/login";
+
+          // OR if you are using Next.js 'useRouter':
+          // router.push("/login");
+        }
+      });
       return;
     }
 

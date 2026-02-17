@@ -32,30 +32,43 @@ const AllPackage = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
+      html: `
+        <style>
+          .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-confirm:hover { background-color: #db2777 !important; }
+          .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
+          .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
+        </style>
+        This record will be permanently removed from admin logs.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#EF4444",
-      cancelButtonColor: "#6B7280",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:5000/servicesPackage/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              Swal.fire("Deleted!", "The package has been removed.", "success");
-              refetch();
-            }
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Keep it",
+      customClass: { popup: "rounded-[40px]" },
+    })
+
+      .then((result) => {
+        if (result.isConfirmed) {
+          fetch(`http://localhost:5000/servicesPackage/${id}`, {
+            method: "DELETE",
           })
-          .catch((err) => {
-            console.error("Delete Error:", err);
-            Swal.fire("Error", "Could not connect to the server.", "error");
-          });
-      }
-    });
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.deletedCount > 0) {
+                Swal.fire(
+                  "Deleted!",
+                  "The package has been removed.",
+                  "success",
+                );
+                refetch();
+              }
+            })
+            .catch((err) => {
+              console.error("Delete Error:", err);
+              Swal.fire("Error", "Could not connect to the server.", "error");
+            });
+        }
+      });
   };
 
   // 4. Update Handler

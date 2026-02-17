@@ -8,17 +8,14 @@ import {
   Calendar,
   Phone,
   Filter,
-  Star,
   Trash2,
-  Hash,
-  MoreVertical,
+  Mail, // মেইল আইকনটি যোগ করা হয়েছে
 } from "lucide-react";
 
 const AllBooking = () => {
   const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState("All");
 
-  // ১. ডাটা ফেচিং
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["all-bookings"],
     queryFn: () =>
@@ -27,7 +24,6 @@ const AllBooking = () => {
       ),
   });
 
-  // ২. সর্টিং (Latest First)
   const sortedBookings = [...bookings].sort(
     (a, b) => new Date(b.bookingDate) - new Date(a.bookingDate),
   );
@@ -37,7 +33,6 @@ const AllBooking = () => {
       ? sortedBookings
       : sortedBookings.filter((item) => item.status === statusFilter);
 
-  // ৩. ডিলিট মিউটেশন
   const deleteMutation = useMutation({
     mutationFn: (id) =>
       fetch(`http://localhost:5000/bookings/${id}`, { method: "DELETE" }),
@@ -47,14 +42,13 @@ const AllBooking = () => {
         title: "Removed!",
         text: "Booking history cleared.",
         icon: "success",
-        timer: 3000, // ৩ সেকেন্ড পর অটো বন্ধ হবে
-        timerProgressBar: true, // নিচে একটি প্রগ্রেস বার দেখাবে
+        timer: 1500,
+        timerProgressBar: true,
         showConfirmButton: true,
       });
     },
   });
 
-  // ৪. স্ট্যাটাস আপডেট মিউটেশন
   const statusMutation = useMutation({
     mutationFn: ({ id, status }) =>
       fetch(`http://localhost:5000/bookings/${id}`, {
@@ -70,7 +64,7 @@ const AllBooking = () => {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1500,
       });
     },
   });
@@ -80,11 +74,8 @@ const AllBooking = () => {
       title: "Delete History?",
       html: `
     <style>
-      /* Confirm Button: Default Black -> Hover Pink */
       .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
       .swal2-confirm:hover { background-color: #db2777 !important; }
-
-      /* Cancel Button: Default Grey -> Hover Pink */
       .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
       .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
     </style>
@@ -133,7 +124,7 @@ const AllBooking = () => {
         </div>
       </div>
 
-      {/* --- Desktop View: Table (Hidden on Mobile) --- */}
+      {/* --- Desktop View: Table --- */}
       <div className="hidden lg:block bg-white rounded-[45px] border border-stone-100 overflow-hidden shadow-sm">
         <table className="table w-full border-collapse">
           <thead className="bg-[#1A1D1F] text-white">
@@ -162,15 +153,21 @@ const AllBooking = () => {
                   <div className="flex items-center gap-4">
                     <img
                       src={item.packageImage}
-                      className="w-14 h-14 rounded-2xl object-cover"
+                      className="w-14 h-14 rounded-2xl object-cover shadow-sm"
                       alt=""
                     />
-                    <div>
-                      <p className="font-black text-stone-800 text-sm uppercase italic mb-1">
+                    <div className="space-y-0.5">
+                      <p className="font-black text-stone-800 text-sm uppercase italic">
                         {item.packageName}
                       </p>
-                      <p className="text-[10px] font-bold text-stone-300 uppercase tracking-widest flex items-center gap-1">
-                        <User size={10} /> {item.userName}
+                      <p className="text-[9px] font-bold text-stone-400 uppercase tracking-widest flex items-center gap-1">
+                        <User size={10} className="text-rose-400" />{" "}
+                        {item.userName}
+                      </p>
+                      {/* ইউজার ইমেইল (Desktop) */}
+                      <p className="text-[9px] font-bold text-stone-300 flex items-center gap-1 lowercase">
+                        <Mail size={10} className="text-stone-300" />{" "}
+                        {item.userEmail}
                       </p>
                     </div>
                   </div>
@@ -182,7 +179,7 @@ const AllBooking = () => {
                       {item.eventDate}
                     </p>
                     <p className="text-[10px] font-bold text-stone-400 flex items-center gap-2 tracking-tighter">
-                      <Phone size={12} /> {item.phone}
+                      <Phone size={12} className="text-rose-400" /> {item.phone}
                     </p>
                   </div>
                 </td>
@@ -233,7 +230,7 @@ const AllBooking = () => {
         </table>
       </div>
 
-      {/* --- Mobile View: Single Card (Hidden on Desktop) --- */}
+      {/* --- Mobile View: Single Card --- */}
       <div className="lg:hidden grid grid-cols-1 gap-6">
         {filteredBookings.map((item, index) => (
           <div
@@ -246,30 +243,33 @@ const AllBooking = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-start gap-4">
               <img
                 src={item.packageImage}
                 className="w-16 h-16 rounded-[20px] object-cover"
                 alt=""
               />
-              <div>
-                <h3 className="font-black text-stone-800 uppercase italic leading-none mb-1">
+              <div className="space-y-1">
+                <h3 className="font-black text-stone-800 uppercase italic leading-none">
                   {item.packageName}
                 </h3>
-                <p className="text-[10px] font-bold text-stone-300 uppercase flex items-center gap-1">
-                  <User size={10} /> {item.userName}
+                <p className="text-[9px] font-bold text-stone-400 uppercase flex items-center gap-1">
+                  <User size={10} className="text-rose-400" /> {item.userName}
+                </p>
+                {/* ইউজার ইমেইল (Mobile) */}
+                <p className="text-[9px] font-bold text-stone-300 flex items-center gap-1 lowercase">
+                  <Mail size={10} /> {item.userEmail}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 py-4 border-y border-stone-50">
-              <div className="text-[10px] font-bold text-stone-400 uppercase italic">
-                <Calendar size={12} className="inline mr-1 text-rose-400" />{" "}
+              <div className="text-[10px] font-bold text-stone-400 uppercase italic flex items-center gap-1">
+                <Calendar size={12} className="text-rose-400" />{" "}
                 {item.eventDate}
               </div>
-              <div className="text-[10px] font-bold text-stone-400 uppercase italic text-right">
-                <Phone size={12} className="inline mr-1 text-rose-400" />{" "}
-                {item.phone}
+              <div className="text-[10px] font-bold text-stone-400 uppercase italic flex items-center justify-end gap-1">
+                <Phone size={12} className="text-rose-400" /> {item.phone}
               </div>
             </div>
 
@@ -288,14 +288,14 @@ const AllBooking = () => {
                         status: "Approved",
                       })
                     }
-                    className="p-3 bg-emerald-50 text-emerald-500 rounded-xl"
+                    className="p-3 bg-emerald-50 text-emerald-500 rounded-xl shadow-sm"
                   >
                     <CheckCircle size={16} />
                   </button>
                 )}
                 <button
                   onClick={() => handleDelete(item._id)}
-                  className="p-3 bg-stone-50 text-stone-300 rounded-xl"
+                  className="p-3 bg-stone-50 text-stone-300 rounded-xl shadow-sm"
                 >
                   <Trash2 size={16} />
                 </button>

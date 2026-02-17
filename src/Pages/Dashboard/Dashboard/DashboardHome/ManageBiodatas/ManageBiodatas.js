@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import {
-  Edit3,
-  Trash2,
-  User,
-  Search,
-  MapPin,
-  X,
-  Info,
-  Calendar,
-} from "lucide-react";
+import { Edit3, Trash2, Search, MapPin, X, Info, Calendar } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 const ManageBiodatas = () => {
@@ -34,6 +25,7 @@ const ManageBiodatas = () => {
         title: "Deleted!",
         text: "Biodata has been removed.",
         icon: "success",
+        timer: 1500,
         customClass: { popup: "rounded-[30px]" },
       });
     },
@@ -43,14 +35,24 @@ const ManageBiodatas = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "This action cannot be undone!",
+      html: `
+            <style>
+              .swal2-confirm { background-color: #1A1D1F !important; transition: 0.3s; border-radius: 15px !important; }
+              .swal2-confirm:hover { background-color: #db2777 !important; }
+              .swal2-cancel { background-color: #f3f4f6 !important; color: #4b5563 !important; transition: 0.3s; border-radius: 15px !important; }
+              .swal2-cancel:hover { background-color: #db2777 !important; color: white !important; }
+            </style>
+            This record will be permanently removed from admin logs.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#1A1D1F",
-      cancelButtonColor: "#f43f5e",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) deleteMutation.mutate(id);
-    });
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Keep it",
+      customClass: { popup: "rounded-[40px]" },
+    })
+
+      .then((result) => {
+        if (result.isConfirmed) deleteMutation.mutate(id);
+      });
   };
 
   const updateMutation = useMutation({

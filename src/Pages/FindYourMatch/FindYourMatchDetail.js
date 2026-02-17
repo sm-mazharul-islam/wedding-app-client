@@ -11,9 +11,7 @@ import {
   Calendar,
   User,
   Users,
-  Award,
   Sparkles,
-  Heart,
   Briefcase,
   BookOpen,
   Home,
@@ -65,14 +63,19 @@ const FindYourMatchDetail = () => {
   const handlePremiumClick = async () => {
     const email = getStorageEmail();
 
-    // STRICT CHECK: লগইন না থাকলে বা ইমেইল না থাকলে সরাসরি আটকে দিবে
+    // STRICT CHECK
     if (!isLoggedIn || !email) {
       Swal.fire({
         title: "Access Denied",
-        text: "Please login with your account to unlock this connection.",
         icon: "error",
+        text: "Please login with your account to unlock this connection.",
         confirmButtonText: "Sign In Now",
-        customClass: { popup: "rounded-[30px]" },
+        buttonsStyling: false, // Disables default styles to use your Tailwind/CSS
+        customClass: {
+          popup: "rounded-[30px]",
+          confirmButton:
+            "bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-all",
+        },
       }).then(() => navigate("/login"));
       return;
     }
@@ -95,13 +98,31 @@ const FindYourMatchDetail = () => {
       if (response.ok) {
         setIsUnlockedInDb(true);
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        Swal.fire("Success!", "Profile Unlocked Successfully", "success");
+        Swal.fire("", "", "success");
+        Swal.fire({
+          title: "Success!",
+          text: "Profile Unlocked Successfully",
+          icon: "success",
+          timer: 3000, // 3 seconds
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       } else {
         const errorData = await response.json();
-        Swal.fire("Error", errorData.message || "Request failed", "error");
+        Swal.fire({
+          title: "Error",
+          text: errorData.message || "Request failed",
+          icon: "error",
+          confirmButtonColor: "#FF69B4", // Hot Pink
+        });
       }
     } catch (error) {
-      Swal.fire("Error", "Server connection failed", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Server connection failed",
+        icon: "error",
+        confirmButtonColor: "#FF69B4",
+      });
     }
   };
 

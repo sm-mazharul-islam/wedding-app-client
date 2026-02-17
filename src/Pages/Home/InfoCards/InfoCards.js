@@ -1,7 +1,4 @@
 import React from "react";
-import image1 from "../../../Images/Luxury_Weddings.jpg";
-import image2 from "../../../Images/Luxury_Weddings.jpg";
-import image3 from "../../../Images/Luxury_Weddings.jpg";
 import InfoCard from "./InfoCard";
 import "./Info.css";
 

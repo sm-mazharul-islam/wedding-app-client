@@ -7,7 +7,6 @@ const AddReviews = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
 
-  // ডিফল্ট ইমেজ যা ফটো না থাকলে দেখাবে
   const defaultPhoto = "https://i.ibb.co/NTDwNc7/image.webp";
 
   const onSubmit = (data) => {
@@ -37,8 +36,8 @@ const AddReviews = () => {
             title: "Review Posted!",
             text: "Thank you for sharing your experience with us!",
             icon: "success",
-            timer: 2000,
             showConfirmButton: false,
+            timer: 1500,
           });
           reset();
         }

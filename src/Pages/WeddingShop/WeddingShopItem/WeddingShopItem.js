@@ -7,8 +7,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Star,
-  ArrowUpDown,
 } from "lucide-react";
 
 const WeddingShopItem = ({ item, setItem }) => {
