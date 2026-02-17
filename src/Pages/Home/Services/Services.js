@@ -14,7 +14,7 @@ const Services = ({ limit, isFullView }) => {
   } = useQuery({
     queryKey: ["servicesPackage"],
     queryFn: async () => {
-      const res = await fetch(`${BASE_URL}servicesPackage`);
+      const res = await fetch(`${BASE_URL}/servicesPackage`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
