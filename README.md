@@ -4,7 +4,7 @@ Elegance is a high-end Frontend application built with **React.js**, designed to
 
 ---
 
-## 🌐 Live Demo
+##  Live Demo
 
 Experience the application live: **(https://wedding-planner-9aed4.web.app/)**
 
